@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Schedule a Consultation | AI For Businesses</title>
+  <meta name="description" content="Schedule a consultation with AI For Businesses to discuss intake automation, response logic, and business workflow automation." />
+  <style>
+    :root {
+      --bg: #020611;
+      --panel: rgba(9, 15, 29, 0.84);
+      --panel-strong: rgba(6, 12, 24, 0.94);
+      --panel-border: rgba(143, 189, 255, 0.12);
+      --panel-border-strong: rgba(143, 189, 255, 0.22);
+      --text: #f5f8ff;
+      --muted: #b8c5da;
+      --soft: #8ea1bf;
+      --accent: #84e2ff;
+      --button-text: #051d2c;
+      --radius: 24px;
+      --max: 1280px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 76% 20%, rgba(111, 219, 255, 0.10), transparent 18%),
+        linear-gradient(180deg, #01040b 0%, #020813 100%);
+    }
+
+    .page {
+      width: min(calc(100% - 24px), 1560px);
+      margin: 14px auto 40px;
+    }
+
+    .shell {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 18px;
+      padding: 24px 0 8px;
+    }
+
+    .brand h1 {
+      margin: 0;
+      font-size: 1.9rem;
+      line-height: 1;
+      letter-spacing: -0.04em;
+    }
+
+    .brand p {
+      margin: 8px 0 0;
+      color: var(--muted);
+      font-size: 1rem;
+    }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 50px;
+      padding: 0 22px;
+      border-radius: 999px;
+      border: 1px solid var(--panel-border-strong);
+      color: var(--text);
+      text-decoration: none;
+      font-weight: 700;
+      background: rgba(9, 15, 29, 0.68);
+      white-space: nowrap;
+    }
+
+    .section {
+      padding: 42px 0 0;
+    }
+
+    .section h2 {
+      margin: 0 0 14px;
+      font-size: clamp(2rem, 4vw, 3rem);
+      line-height: 1;
+      letter-spacing: -0.04em;
+    }
+
+    .section p.lead {
+      margin: 0;
+      max-width: 860px;
+      color: var(--muted);
+      line-height: 1.65;
+      font-size: 1.05rem;
+    }
+
+
+    .contact-strip {
+      margin-top: 20px;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .contact-tile {
+      background: linear-gradient(180deg, rgba(9, 15, 29, 0.84), rgba(5, 10, 21, 0.78));
+      border: 1px solid rgba(146, 177, 220, 0.14);
+      border-radius: 20px;
+      padding: 18px 20px;
+    }
+
+    .contact-tile h3 {
+      margin: 0 0 8px;
+      font-size: 1rem;
+      letter-spacing: -0.02em;
+    }
+
+    .contact-tile a {
+      color: var(--text);
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 1rem;
+    }
+
+    .contact-tile p {
+      margin: 8px 0 0;
+      color: var(--muted);
+      line-height: 1.6;
+      font-size: 0.95rem;
+    }
+    .form-shell {
+      margin-top: 26px;
+      padding: 38px;
+      border-radius: 28px;
+      background: linear-gradient(135deg, rgba(8, 14, 27, 0.94), rgba(10, 20, 42, 0.92));
+      border: 1px solid rgba(146, 177, 220, 0.14);
+      box-shadow: 0 12px 40px rgba(0,0,0,.25);
+    }
+
+    form {
+      width: 100%;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 18px;
+      margin-top: 10px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .form-group-full {
+      grid-column: 1 / -1;
+    }
+
+    label {
+      margin-bottom: 8px;
+      font-weight: 700;
+      color: #f5f8ff;
+      font-size: 0.98rem;
+    }
+
+    input,
+    select,
+    textarea {
+      width: 100%;
+      border-radius: 16px;
+      border: 1px solid rgba(146, 177, 220, 0.14);
+      background: rgba(8, 14, 27, 0.88);
+      color: #f5f8ff;
+      padding: 14px 16px;
+      font: inherit;
+      outline: none;
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus {
+      border-color: rgba(132, 226, 255, 0.55);
+      box-shadow: 0 0 0 3px rgba(132, 226, 255, 0.12);
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 170px;
+    }
+
+    .form-actions {
+      margin-top: 22px;
+      display: flex;
+      gap: 14px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 58px;
+      padding: 0 30px;
+      border-radius: 999px;
+      border: 1px solid transparent;
+      font-weight: 800;
+      font-size: 1rem;
+      cursor: pointer;
+      text-decoration: none;
+      white-space: nowrap;
+      transition: transform .18s ease, box-shadow .18s ease, opacity .18s ease;
+    }
+
+    .btn:hover { transform: translateY(-1px); }
+
+    .btn-primary {
+      color: var(--button-text);
+      background: linear-gradient(135deg, #a5eeff 0%, #77ddff 48%, #c1f8ff 100%);
+      box-shadow: 0 0 36px rgba(107, 220, 255, 0.28);
+    }
+
+    .btn-secondary {
+      color: var(--text);
+      border-color: rgba(146, 177, 220, 0.18);
+      background: rgba(8, 14, 27, 0.72);
+    }
+
+    .btn:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .form-status {
+      margin-top: 18px;
+      font-weight: 600;
+      color: #b8c5da;
+      line-height: 1.5;
+    }
+
+    .form-status.success { color: #8ff0b6; }
+    .form-status.error { color: #ff9ea1; }
+
+    .footer {
+      color: var(--soft);
+      text-align: center;
+      padding: 36px 20px 10px;
+      font-size: .95rem;
+    }
+
+    @media (max-width: 900px) {
+      .page { width: 100%; margin: 0 0 28px; }
+      .form-grid { grid-template-columns: 1fr; }
+      .contact-strip { grid-template-columns: 1fr; }
+      .form-group-full { grid-column: auto; }
+      .topbar {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .form-actions {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .btn {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="shell">
+      <div class="topbar">
+        <div class="brand">
+          <h1>AI For Businesses</h1>
+          <p>Powered by Apropos AI Systems &amp; Automation</p>
+        </div>
+        <a href="index.html" class="back-link">Back to Home</a>
+      </div>
+
+      <section class="section">
+        <h2>Schedule a Consultation</h2>
+        <p class="lead">Tell us what you want to automate. We’ll review your intake flow, response process, and business objectives, then follow up with the right next step.</p>
+
+        <div class="contact-strip">
+          <div class="contact-tile">
+            <h3>Email</h3>
+            <a href="mailto:support@ai4businesses.org">support@ai4businesses.org</a>
+            <p>Use email for service questions, project details, and general support.</p>
+          </div>
+          <div class="contact-tile">
+            <h3>Phone</h3>
+            <a href="tel:8882445737">888.244.5737</a>
+            <p>Call if you want to discuss your automation goals directly.</p>
+          </div>
+        </div>
+
+        <div class="form-shell">
+          <form id="consultation-form">
+            <div class="form-grid">
+              <div class="form-group">
+                <label for="fullName">Full Name *</label>
+                <input type="text" id="fullName" name="fullName" required />
+              </div>
+
+              <div class="form-group">
+                <label for="email">Email Address *</label>
+                <input type="email" id="email" name="email" required />
+              </div>
+
+              <div class="form-group">
+                <label for="phone">Phone *</label>
+                <input type="text" id="phone" name="phone" required />
+              </div>
+
+              <div class="form-group">
+                <label for="company">Company</label>
+                <input type="text" id="company" name="company" />
+              </div>
+
+              <div class="form-group form-group-full">
+                <label for="serviceInterest">Service Interest *</label>
+                <select id="serviceInterest" name="serviceInterest" required>
+                  <option value="">Select a service</option>
+                  <option value="AI Intake Integration">AI Intake Integration</option>
+                  <option value="Automated Response Logic">Automated Response Logic</option>
+                  <option value="Business Workflow Automation">Business Workflow Automation</option>
+                  <option value="General Consultation">General Consultation</option>
+                </select>
+              </div>
+
+              <div class="form-group form-group-full">
+                <label for="message">Message *</label>
+                <textarea id="message" name="message" rows="6" required></textarea>
+              </div>
+            </div>
+
+            <div class="form-actions">
+              <button type="submit" id="submitButton" class="btn btn-primary">Send Request</button>
+              <a href="services.html" class="btn btn-secondary">View Services</a>
+            </div>
+
+            <div id="form-status" class="form-status" aria-live="polite"></div>
+          </form>
+        </div>
+      </section>
+
+      <div class="footer">© 2026 AI For Businesses. Powered by Apropos AI Systems &amp; Automation.</div>
+    </div>
+  </div>
+
+  <script>
+    const consultationForm = document.getElementById("consultation-form");
+    const formStatus = document.getElementById("form-status");
+    const submitButton = document.getElementById("submitButton");
+
+    function setStatus(message, type) {
+      formStatus.textContent = message;
+      formStatus.className = "form-status" + (type ? " " + type : "");
+    }
+
+    consultationForm.addEventListener("submit", async function (e) {
+      e.preventDefault();
+
+      setStatus("", "");
+      submitButton.disabled = true;
+      submitButton.textContent = "Sending...";
+
+      const payload = {
+        full_name: document.getElementById("fullName").value.trim(),
+        email: document.getElementById("email").value.trim(),
+        phone: document.getElementById("phone").value.trim(),
+        company: document.getElementById("company").value.trim(),
+        service_interest: document.getElementById("serviceInterest").value.trim(),
+        message: document.getElementById("message").value.trim(),
+        source_page: "consultation.html"
+      };
+
+      try {
+        const response = await fetch("/.netlify/functions/submit", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(payload)
+        });
+
+        const result = await response.json();
+
+        if (!response.ok || !result.success) {
+          throw new Error(result.error || "Submission failed");
+        }
+
+        consultationForm.reset();
+        setStatus(result.message || "Your consultation request has been sent successfully.", "success");
+      } catch (error) {
+        setStatus(error.message || "Something went wrong. Please try again.", "error");
+      } finally {
+        submitButton.disabled = false;
+        submitButton.textContent = "Send Request";
+      }
+    });
+  </script>
+</body>
+</html>

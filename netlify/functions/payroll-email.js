@@ -1,0 +1,189 @@
+// netlify/functions/payroll-email.js
+// Fires a branded HTML email to the visitor with their payroll breakdown
+// Uses: RESEND_API_KEY, RESEND_FROM_EMAIL, RESEND_TO_EMAIL (already set in Netlify env)
+
+exports.handler = async function (event) {
+  if (event.httpMethod === "OPTIONS") {
+    return { statusCode: 200, headers: { "Access-Control-Allow-Origin": "*", "Access-Control-Allow-Methods": "POST, OPTIONS", "Access-Control-Allow-Headers": "Content-Type" }, body: "" };
+  }
+  if (event.httpMethod !== "POST") return { statusCode: 405, body: "Method Not Allowed" };
+
+  let payload;
+  try { payload = JSON.parse(event.body); } catch { return { statusCode: 400, body: "Invalid JSON" }; }
+
+  const { name, email, rate, hours, period, tax, type, gross, fed, fica, net, pLabel, typeLabel, ficaLabel, taxPct } = payload;
+  if (!name || !email) return { statusCode: 422, body: "Missing name or email" };
+
+  // ── Branded HTML email ──────────────────────────────────────────────────────
+  const html = `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Your Payroll Estimate — FlowDesk Pro</title>
+</head>
+<body style="margin:0;padding:0;background:#080810;font-family:'Helvetica Neue',Arial,sans-serif;color:#B8B8D0;">
+
+  <!-- Outer wrapper -->
+  <table width="100%" cellpadding="0" cellspacing="0" style="background:#080810;padding:40px 20px;">
+    <tr><td align="center">
+
+      <!-- Card -->
+      <table width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;background:#111124;border:1px solid rgba(180,150,80,0.18);border-radius:10px;overflow:hidden;">
+
+        <!-- Gold top bar -->
+        <tr><td style="height:3px;background:linear-gradient(90deg,transparent,#C8A84B,transparent);"></td></tr>
+
+        <!-- Header -->
+        <tr>
+          <td style="padding:36px 40px 28px;border-bottom:1px solid rgba(180,150,80,0.12);">
+            <p style="margin:0 0 6px;font-family:'Courier New',monospace;font-size:10px;letter-spacing:0.25em;text-transform:uppercase;color:#C8A84B;">FlowDesk Pro · Business Intake Dashboard</p>
+            <h1 style="margin:0;font-size:26px;font-weight:300;color:#F0F0FA;letter-spacing:0.02em;line-height:1.2;">Your Payroll Estimate</h1>
+            <p style="margin:8px 0 0;font-size:14px;color:#6A6A88;">Hi ${name} — here's the breakdown you requested.</p>
+          </td>
+        </tr>
+
+        <!-- Net pay hero -->
+        <tr>
+          <td style="padding:32px 40px;background:rgba(200,168,75,0.04);border-bottom:1px solid rgba(180,150,80,0.1);">
+            <p style="margin:0 0 6px;font-size:11px;letter-spacing:0.18em;text-transform:uppercase;color:#C8A84B;">Estimated Net Pay · ${pLabel}</p>
+            <p style="margin:0;font-size:46px;font-weight:300;color:#F0F0FA;letter-spacing:0.01em;line-height:1;">${net}</p>
+            <p style="margin:8px 0 0;font-size:13px;color:#6A6A88;">${typeLabel} · $${rate}/hr · ${hours} hrs/week</p>
+          </td>
+        </tr>
+
+        <!-- Breakdown table -->
+        <tr>
+          <td style="padding:28px 40px;">
+            <p style="margin:0 0 16px;font-size:11px;letter-spacing:0.18em;text-transform:uppercase;color:#9898B8;">Breakdown</p>
+            <table width="100%" cellpadding="0" cellspacing="0">
+              <tr>
+                <td style="padding:10px 0;font-size:14px;color:#D4D4E8;border-bottom:1px solid rgba(180,150,80,0.08);">Gross Pay (${pLabel})</td>
+                <td style="padding:10px 0;font-size:14px;color:#F0F0FA;text-align:right;border-bottom:1px solid rgba(180,150,80,0.08);">${gross}</td>
+              </tr>
+              <tr>
+                <td style="padding:10px 0;font-size:14px;color:#D4D4E8;border-bottom:1px solid rgba(180,150,80,0.08);">Federal Tax Withholding (${taxPct}%)</td>
+                <td style="padding:10px 0;font-size:14px;color:#CF6E6E;text-align:right;border-bottom:1px solid rgba(180,150,80,0.08);">−${fed}</td>
+              </tr>
+              <tr>
+                <td style="padding:10px 0;font-size:14px;color:#D4D4E8;border-bottom:1px solid rgba(180,150,80,0.08);">${ficaLabel}</td>
+                <td style="padding:10px 0;font-size:14px;color:#CF6E6E;text-align:right;border-bottom:1px solid rgba(180,150,80,0.08);">−${fica}</td>
+              </tr>
+              <tr>
+                <td style="padding:14px 0 0;font-size:15px;font-weight:500;color:#E2C97E;">Estimated Net Pay</td>
+                <td style="padding:14px 0 0;font-size:15px;font-weight:500;color:#E2C97E;text-align:right;">${net}</td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+        <!-- Divider -->
+        <tr><td style="height:1px;background:rgba(180,150,80,0.1);margin:0 40px;"></td></tr>
+
+        <!-- CTA -->
+        <tr>
+          <td style="padding:28px 40px;">
+            <p style="margin:0 0 16px;font-size:14px;color:#9898B8;line-height:1.7;">
+              This estimate was generated by the <strong style="color:#D4D4E8;">FlowDesk Pro Business Intake Dashboard</strong> — one of four AI-powered automation systems built for businesses that run on precision.
+            </p>
+            <table cellpadding="0" cellspacing="0">
+              <tr>
+                <td style="background:#C8A84B;border-radius:4px;">
+                  <a href="https://ai4businesses.org/#demo" style="display:inline-block;padding:12px 28px;font-size:12px;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;color:#080810;text-decoration:none;">Request a Full Demo</a>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+        <!-- Disclaimer -->
+        <tr>
+          <td style="padding:0 40px 28px;">
+            <p style="margin:0;font-size:11px;color:#6A6A88;line-height:1.7;">
+              <em>Estimate only. Does not account for state/local taxes, benefits, or other deductions. Consult a licensed payroll professional for compliance guidance.</em>
+            </p>
+          </td>
+        </tr>
+
+        <!-- Footer -->
+        <tr>
+          <td style="padding:20px 40px;background:#0D0D1A;border-top:1px solid rgba(180,150,80,0.1);">
+            <table width="100%" cellpadding="0" cellspacing="0">
+              <tr>
+                <td style="font-size:11px;color:#6A6A88;">Apropos Group LLC · Las Vegas, NV · ai4businesses.org</td>
+                <td style="font-size:11px;color:#6A6A88;text-align:right;">FlowDesk Pro</td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+      </table>
+    </td></tr>
+  </table>
+</body>
+</html>`;
+
+  // ── Plain text fallback ────────────────────────────────────────────────────
+  const text = `FlowDesk Pro · Payroll Estimate for ${name}
+
+ESTIMATED NET PAY (${pLabel}): ${net}
+
+Gross Pay:               ${gross}
+Federal Tax (${taxPct}%):   −${fed}
+${ficaLabel}: −${fica}
+─────────────────────────
+Net Pay:                 ${net}
+
+Type: ${typeLabel} · $${rate}/hr · ${hours} hrs/week
+
+This estimate was generated by the FlowDesk Pro Business Intake Dashboard.
+Estimate only — consult a payroll professional for compliance.
+
+Apropos Group LLC · Las Vegas, NV · ai4businesses.org`;
+
+  // ── Send via Resend ────────────────────────────────────────────────────────
+  const RESEND_API_KEY   = process.env.RESEND_API_KEY;
+  const RESEND_FROM      = process.env.RESEND_FROM_EMAIL || "FlowDesk Pro <noreply@ai4businesses.org>";
+  const RESEND_TO_NOTIFY = process.env.RESEND_TO_EMAIL;
+
+  if (!RESEND_API_KEY) {
+    console.error("RESEND_API_KEY not set");
+    return { statusCode: 500, body: "Email service not configured" };
+  }
+
+  const sendEmail = async (to, subject) => {
+    const res = await fetch("https://api.resend.com/emails", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "Authorization": `Bearer ${RESEND_API_KEY}` },
+      body: JSON.stringify({ from: RESEND_FROM, to, subject, html, text })
+    });
+    if (!res.ok) {
+      const err = await res.text();
+      throw new Error(`Resend error (${res.status}): ${err}`);
+    }
+    return res.json();
+  };
+
+  try {
+    // Send to visitor
+    await sendEmail(email, `Your Payroll Estimate — ${net} Net (${pLabel})`);
+
+    // Notify owner (non-fatal if it fails)
+    if (RESEND_TO_NOTIFY && RESEND_TO_NOTIFY !== email) {
+      try {
+        await sendEmail(RESEND_TO_NOTIFY, `[FlowDesk Pro] Payroll Demo — ${name} <${email}>`);
+      } catch (notifyErr) {
+        console.warn("Owner notification failed (non-fatal):", notifyErr.message);
+      }
+    }
+
+    return {
+      statusCode: 200,
+      headers: { "Content-Type": "application/json", "Access-Control-Allow-Origin": "*" },
+      body: JSON.stringify({ success: true })
+    };
+  } catch (err) {
+    console.error("Email send failed:", err.message);
+    return { statusCode: 500, body: JSON.stringify({ error: "Failed to send email" }) };
+  }
+};

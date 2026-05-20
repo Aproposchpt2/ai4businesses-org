@@ -1,0 +1,1124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI For Businesses | Opportunity Offering</title>
+  <meta name="description" content="AI For Businesses is the starting point for those ready to begin turning their vision into reality through structured launch support, designer websites, managed setup, and future-ready business systems." />
+  <meta name="theme-color" content="#0a2040" />
+  <style>
+
+    :root {
+      --bg: #04111f;
+      --bg-elevated: #071a30;
+      --bg-soft: #0c2340;
+      --panel: rgba(10, 27, 50, 0.74);
+      --panel-strong: rgba(7, 21, 40, 0.9);
+      --panel-glass: rgba(255, 255, 255, 0.045);
+      --line: rgba(120, 190, 255, 0.18);
+      --line-strong: rgba(124, 193, 255, 0.34);
+      --line-bright: rgba(178, 225, 255, 0.42);
+      --text: #f4f9ff;
+      --muted: #a5bfd8;
+      --soft: #d9e9fb;
+      --sky: #89d6ff;
+      --sky-strong: #59bfff;
+      --royal: #2b5fff;
+      --royal-deep: #183cbe;
+      --cyan: #c1f1ff;
+      --shadow: 0 30px 80px rgba(0, 0, 0, 0.38);
+      --shadow-soft: 0 18px 40px rgba(8, 23, 47, 0.28);
+      --radius-xl: 30px;
+      --radius-lg: 22px;
+      --radius-md: 16px;
+      --max: 1240px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family: Inter, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background:
+        radial-gradient(circle at 12% 10%, rgba(102, 190, 255, 0.18), transparent 24%),
+        radial-gradient(circle at 86% 14%, rgba(43, 95, 255, 0.18), transparent 22%),
+        radial-gradient(circle at 78% 72%, rgba(137, 214, 255, 0.12), transparent 26%),
+        linear-gradient(180deg, #03101d 0%, #06182d 34%, #071e38 62%, #04111f 100%);
+      color: var(--text);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background:
+        linear-gradient(rgba(255,255,255,0.018) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.018) 1px, transparent 1px);
+      background-size: 48px 48px;
+      mask-image: linear-gradient(180deg, rgba(0,0,0,0.28), transparent 26%, transparent 74%, rgba(0,0,0,0.28));
+      opacity: 0.22;
+      z-index: -2;
+    }
+
+    img {
+      max-width: 100%;
+      display: block;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .container {
+      width: min(calc(100% - 32px), var(--max));
+      margin: 0 auto;
+    }
+
+    .site-shell {
+      position: relative;
+      isolation: isolate;
+    }
+
+    .site-shell::before,
+    .site-shell::after {
+      content: "";
+      position: fixed;
+      width: 420px;
+      height: 420px;
+      border-radius: 50%;
+      filter: blur(90px);
+      z-index: -1;
+      pointer-events: none;
+      opacity: 0.62;
+    }
+
+    .site-shell::before {
+      top: 70px;
+      left: -150px;
+      background: rgba(89, 191, 255, 0.16);
+    }
+
+    .site-shell::after {
+      right: -140px;
+      bottom: 60px;
+      background: rgba(43, 95, 255, 0.18);
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 30;
+      backdrop-filter: blur(16px);
+      background: linear-gradient(180deg, rgba(4, 17, 31, 0.88), rgba(4, 17, 31, 0.68));
+      border-bottom: 1px solid rgba(137, 214, 255, 0.1);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      min-height: 82px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      min-width: 0;
+    }
+
+    .brand-mark {
+      width: 50px;
+      height: 50px;
+      border-radius: 16px;
+      background:
+        linear-gradient(145deg, rgba(137, 214, 255, 0.28), rgba(43, 95, 255, 0.22));
+      border: 1px solid rgba(193, 241, 255, 0.24);
+      display: grid;
+      place-items: center;
+      box-shadow:
+        inset 0 1px 0 rgba(255,255,255,0.18),
+        0 18px 36px rgba(24, 60, 190, 0.22);
+      flex-shrink: 0;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .brand-mark::after {
+      content: "";
+      position: absolute;
+      inset: 1px;
+      border-radius: 15px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.08), transparent 48%);
+      pointer-events: none;
+    }
+
+    .brand-mark span {
+      position: relative;
+      z-index: 1;
+      font-size: 1rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+    }
+
+    .brand-copy {
+      min-width: 0;
+    }
+
+    .brand-copy strong,
+    .brand-copy span {
+      display: block;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .brand-copy strong {
+      font-size: 0.98rem;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    .brand-copy span {
+      color: var(--muted);
+      font-size: 0.82rem;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .nav-links a {
+      position: relative;
+      transition: color 0.22s ease;
+    }
+
+    .nav-links a::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: -8px;
+      width: 100%;
+      height: 1px;
+      background: linear-gradient(90deg, rgba(137, 214, 255, 0), rgba(137, 214, 255, 0.9), rgba(43, 95, 255, 0));
+      transform: scaleX(0.35);
+      opacity: 0;
+      transition: transform 0.22s ease, opacity 0.22s ease;
+      transform-origin: center;
+    }
+
+    .nav-links a:hover {
+      color: var(--text);
+    }
+
+    .nav-links a:hover::after {
+      transform: scaleX(1);
+      opacity: 1;
+    }
+
+    h1, h2, h3 {
+      margin: 0;
+      line-height: 1.08;
+    }
+
+    h1 {
+      margin-top: 22px;
+      font-size: clamp(2.8rem, 5vw, 5.3rem);
+      letter-spacing: -0.05em;
+      max-width: 11ch;
+    }
+
+    .headline-accent {
+      color: var(--sky);
+      text-shadow: 0 0 24px rgba(137, 214, 255, 0.18);
+    }
+
+    .hero {
+      padding: 76px 0 38px;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.08fr 0.92fr;
+      gap: 34px;
+      align-items: stretch;
+    }
+
+    .hero-copy,
+    .hero-visual,
+    .compact-copy,
+    .compact-side,
+    .section-panel,
+    .cta-card,
+    .consultation-shell {
+      position: relative;
+      border-radius: 34px;
+      border: 1px solid var(--line);
+      background:
+        linear-gradient(180deg, rgba(12, 33, 62, 0.92), rgba(6, 20, 38, 0.94));
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .hero-copy::after,
+    .hero-visual::after,
+    .compact-copy::after,
+    .compact-side::after,
+    .section-panel::after,
+    .cta-card::after,
+    .consultation-shell::after {
+      content: "";
+      position: absolute;
+      inset: 1px;
+      border-radius: inherit;
+      border: 1px solid rgba(255,255,255,0.035);
+      pointer-events: none;
+    }
+
+    .hero-copy {
+      padding: 46px;
+      background:
+        radial-gradient(circle at top left, rgba(137, 214, 255, 0.14), transparent 34%),
+        linear-gradient(180deg, rgba(13, 35, 66, 0.95), rgba(6, 20, 38, 0.96));
+    }
+
+    .hero-copy::before,
+    .hero-visual::before,
+    .section-panel::before,
+    .consultation-shell::before,
+    .compact-copy::before,
+    .compact-side::before,
+    .cta-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(135deg, rgba(137, 214, 255, 0.09), transparent 32%, rgba(43, 95, 255, 0.12) 100%);
+      pointer-events: none;
+    }
+
+    .hero-copy > *,
+    .compact-copy > *,
+    .compact-side > *,
+    .section-panel > *,
+    .cta-card > *,
+    .consultation-shell > * {
+      position: relative;
+      z-index: 1;
+    }
+
+    .locked-line {
+      margin-top: 26px;
+      padding: 20px 22px;
+      border-radius: 20px;
+      border: 1px solid rgba(193, 241, 255, 0.18);
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.055), rgba(255,255,255,0.025));
+      color: var(--soft);
+      font-size: 1.03rem;
+      font-weight: 650;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.06);
+    }
+
+    .hero-visual {
+      min-height: 720px;
+      background:
+        linear-gradient(180deg, rgba(4, 17, 31, 0.1), rgba(4, 17, 31, 0.86)),
+        linear-gradient(145deg, rgba(43, 95, 255, 0.22), rgba(137, 214, 255, 0.16)),
+        url('https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=1400&q=80') center center / cover no-repeat;
+    }
+
+    .hero-visual::before {
+      background:
+        linear-gradient(180deg, rgba(7, 18, 34, 0.08), rgba(7, 18, 34, 0.4)),
+        radial-gradient(circle at 78% 18%, rgba(137, 214, 255, 0.22), transparent 20%),
+        linear-gradient(135deg, rgba(137, 214, 255, 0.07), transparent 40%, rgba(43, 95, 255, 0.12));
+    }
+
+    main section {
+      padding: 34px 0;
+    }
+
+    #provide {
+      position: relative;
+    }
+
+    #provide::before,
+    .consultation-section::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      height: 1px;
+      top: 0;
+      background: linear-gradient(90deg, rgba(137, 214, 255, 0), rgba(137, 214, 255, 0.3), rgba(43, 95, 255, 0));
+      opacity: 0.5;
+    }
+
+    .section-panel {
+      padding: 38px;
+      background:
+        radial-gradient(circle at top right, rgba(43, 95, 255, 0.12), transparent 28%),
+        linear-gradient(180deg, rgba(12, 33, 62, 0.94), rgba(6, 20, 38, 0.96));
+    }
+
+    .section-header {
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(260px, 0.9fr);
+      gap: 22px;
+      align-items: end;
+      margin-bottom: 30px;
+    }
+
+    .section-tag {
+      display: inline-flex;
+      padding: 9px 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(193, 241, 255, 0.18);
+      color: var(--sky);
+      font-weight: 800;
+      font-size: 0.76rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.06);
+    }
+
+    .section-header h2 {
+      font-size: clamp(2rem, 3vw, 3.2rem);
+      letter-spacing: -0.045em;
+      max-width: 12ch;
+    }
+
+    .section-header p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 1rem;
+      max-width: 56ch;
+    }
+
+    .compact-hero {
+      padding: 20px 0 24px;
+    }
+
+    .compact-hero-grid {
+      display: grid;
+      grid-template-columns: 1fr 0.9fr;
+      gap: 28px;
+      align-items: stretch;
+    }
+
+    .compact-copy,
+    .compact-side {
+      padding: 40px;
+    }
+
+    .compact-copy {
+      background:
+        radial-gradient(circle at top left, rgba(137, 214, 255, 0.13), transparent 34%),
+        linear-gradient(180deg, rgba(12, 33, 62, 0.94), rgba(6, 20, 38, 0.96));
+    }
+
+    .compact-copy h2.main-compact {
+      font-size: clamp(2.6rem, 5vw, 5rem);
+      letter-spacing: -0.05em;
+      line-height: 1.05;
+      margin-top: 16px;
+      max-width: 10ch;
+    }
+
+    .summary-block {
+      margin-top: 24px;
+      padding-top: 22px;
+      border-top: 1px solid rgba(137, 214, 255, 0.14);
+      position: relative;
+      z-index: 1;
+    }
+
+    .summary-block + .summary-block {
+      margin-top: 18px;
+    }
+
+    .summary-block h3 {
+      font-size: 1.35rem;
+      letter-spacing: -0.03em;
+      color: var(--sky);
+    }
+
+    .summary-block p {
+      margin: 10px 0 0;
+      color: var(--soft);
+      font-size: 1.03rem;
+      max-width: 52ch;
+    }
+
+    .compact-side {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      min-height: 100%;
+      background:
+        linear-gradient(180deg, rgba(4, 17, 31, 0.18), rgba(4, 17, 31, 0.9)),
+        linear-gradient(145deg, rgba(43, 95, 255, 0.2), rgba(137, 214, 255, 0.1)),
+        url('https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=1400&q=80') center center / cover no-repeat;
+    }
+
+    .compact-side h3 {
+      font-size: clamp(1.8rem, 3vw, 2.8rem);
+      letter-spacing: -0.04em;
+      max-width: 9ch;
+      text-shadow: 0 12px 30px rgba(0,0,0,0.35);
+    }
+
+    .provide-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .match-card {
+      position: relative;
+      padding: 26px;
+      border-radius: 24px;
+      border: 1px solid rgba(137, 214, 255, 0.14);
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.055), rgba(255,255,255,0.02));
+      overflow: hidden;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .match-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(145deg, rgba(137, 214, 255, 0.06), transparent 45%, rgba(43, 95, 255, 0.08));
+      pointer-events: none;
+    }
+
+    .match-card strong,
+    .match-card p {
+      position: relative;
+      z-index: 1;
+    }
+
+    .match-card strong {
+      display: block;
+      font-size: 1.08rem;
+      margin-bottom: 10px;
+      letter-spacing: -0.02em;
+      color: var(--text);
+    }
+
+    .match-card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.97rem;
+    }
+
+    .cta-section {
+      padding-bottom: 10px;
+    }
+
+    .cta-card {
+      padding: 46px;
+      border: 1px solid rgba(193, 241, 255, 0.18);
+      background:
+        linear-gradient(180deg, rgba(7, 21, 39, 0.82), rgba(5, 16, 31, 0.92)),
+        linear-gradient(120deg, rgba(43, 95, 255, 0.24), rgba(137, 214, 255, 0.1)),
+        url('https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=1400&q=80') center center / cover no-repeat;
+    }
+
+    .cta-card-inner {
+      position: relative;
+      z-index: 1;
+      max-width: 760px;
+    }
+
+    .cta-card h2 {
+      font-size: clamp(2.25rem, 3.8vw, 4rem);
+      letter-spacing: -0.045em;
+      max-width: 12ch;
+    }
+
+    .cta-card p {
+      margin: 18px 0 0;
+      max-width: 58ch;
+      color: var(--soft);
+      font-size: 1.06rem;
+    }
+
+    .cta-note {
+      margin-top: 18px;
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+
+    .consultation-section {
+      position: relative;
+      padding: 34px 0 82px;
+    }
+
+    .consultation-shell {
+      padding: 40px;
+      border: 1px solid rgba(193, 241, 255, 0.18);
+      background:
+        radial-gradient(circle at top right, rgba(43, 95, 255, 0.12), transparent 28%),
+        linear-gradient(180deg, rgba(12, 33, 62, 0.96), rgba(6, 20, 38, 0.98));
+    }
+
+    .consultation-inner {
+      position: relative;
+      z-index: 1;
+    }
+
+    .consultation-header {
+      display: grid;
+      grid-template-columns: minmax(0, 1.05fr) minmax(280px, 0.95fr);
+      gap: 24px;
+      align-items: end;
+      margin-bottom: 28px;
+    }
+
+    .consultation-header h2 {
+      font-size: clamp(2.1rem, 4vw, 3.5rem);
+      letter-spacing: -0.045em;
+      max-width: 12ch;
+    }
+
+    .consultation-header p,
+    .consultation-note,
+    .consultation-side p,
+    .consultation-status {
+      color: var(--muted);
+    }
+
+    .consultation-side {
+      padding: 22px;
+      border-radius: 24px;
+      border: 1px solid rgba(137, 214, 255, 0.14);
+      background: rgba(255,255,255,0.04);
+    }
+
+    .consultation-side strong {
+      display: block;
+      margin-bottom: 10px;
+      font-size: 1.05rem;
+      letter-spacing: -0.02em;
+      color: var(--sky);
+    }
+
+    .consultation-form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+      margin-top: 10px;
+    }
+
+    .consultation-group {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .consultation-group-full {
+      grid-column: 1 / -1;
+    }
+
+    .consultation-label {
+      margin-bottom: 8px;
+      font-weight: 700;
+      color: var(--text);
+      font-size: 0.96rem;
+    }
+
+    .consultation-input,
+    .consultation-select,
+    .consultation-textarea {
+      width: 100%;
+      border-radius: 16px;
+      border: 1px solid rgba(153, 190, 235, 0.18);
+      background:
+        linear-gradient(180deg, rgba(7, 18, 36, 0.92), rgba(9, 23, 45, 0.96));
+      color: var(--text);
+      padding: 14px 16px;
+      font: inherit;
+      outline: none;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.04);
+      transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+    }
+
+    .consultation-input::placeholder,
+    .consultation-textarea::placeholder {
+      color: #8fa7c5;
+    }
+
+    .consultation-input:focus,
+    .consultation-select:focus,
+    .consultation-textarea:focus {
+      border-color: rgba(137, 214, 255, 0.55);
+      box-shadow:
+        0 0 0 3px rgba(137, 214, 255, 0.12),
+        0 10px 24px rgba(24, 60, 190, 0.14);
+    }
+
+    .consultation-textarea {
+      min-height: 180px;
+      resize: vertical;
+    }
+
+    .consultation-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      align-items: center;
+      margin-top: 24px;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 56px;
+      padding: 0 28px;
+      border: 0;
+      border-radius: 999px;
+      font: inherit;
+      font-weight: 800;
+      letter-spacing: 0.01em;
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
+      background:
+        linear-gradient(135deg, var(--sky-strong), var(--royal));
+      color: #ffffff;
+      box-shadow:
+        inset 0 1px 0 rgba(255,255,255,0.18),
+        0 18px 34px rgba(24, 60, 190, 0.34);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-1px);
+      filter: brightness(1.03);
+      box-shadow:
+        inset 0 1px 0 rgba(255,255,255,0.18),
+        0 22px 38px rgba(24, 60, 190, 0.38);
+    }
+
+    .btn-primary:disabled {
+      cursor: not-allowed;
+      transform: none;
+      filter: saturate(0.8);
+      opacity: 0.78;
+    }
+
+    .consultation-status {
+      margin-top: 18px;
+      min-height: 24px;
+      font-weight: 600;
+      line-height: 1.5;
+    }
+
+    .consultation-status.success {
+      color: #94f0bb;
+    }
+
+    .consultation-status.error {
+      color: #ff9fa8;
+    }
+
+    .footer {
+      padding: 0 0 48px;
+    }
+
+    .footer-bar {
+      border-top: 1px solid rgba(137, 214, 255, 0.09);
+      padding-top: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 16px;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    @media (max-width: 1120px) {
+      .hero-grid,
+      .section-header,
+      .compact-hero-grid,
+      .provide-grid,
+      .consultation-header,
+      .consultation-form-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-visual {
+        min-height: 560px;
+      }
+
+      .section-header h2,
+      .cta-card h2,
+      .consultation-header h2 {
+        max-width: none;
+      }
+
+      .consultation-group-full {
+        grid-column: auto;
+      }
+    }
+
+    @media (max-width: 860px) {
+      .nav {
+        min-height: 74px;
+      }
+
+      .nav-links {
+        display: none;
+      }
+
+      .hero {
+        padding-top: 34px;
+      }
+
+      .hero-copy,
+      .section-panel,
+      .compact-copy,
+      .compact-side,
+      .cta-card,
+      .consultation-shell {
+        padding: 28px 22px;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .container {
+        width: min(calc(100% - 20px), var(--max));
+      }
+
+      .brand-copy span {
+        display: none;
+      }
+
+      h1 {
+        margin-top: 18px;
+        font-size: clamp(2.2rem, 12vw, 3.5rem);
+      }
+
+      .hero-copy,
+      .hero-visual,
+      .section-panel,
+      .compact-copy,
+      .cta-card,
+      .consultation-shell {
+        border-radius: 26px;
+      }
+
+      .hero-visual,
+      .compact-side,
+      .consultation-side {
+        display: none;
+      }
+
+      .consultation-actions {
+        flex-direction: column;
+      }
+
+      .consultation-actions .btn-primary {
+        width: 100%;
+        font-size: 1.05rem;
+      }
+
+      .footer-bar {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+
+  </style>
+</head>
+<body>
+  <div class="site-shell">
+    <header class="topbar">
+      <div class="container nav">
+        <div class="brand" aria-label="AI For Businesses home">
+          <div class="brand-mark"><span>AI</span></div>
+          <div class="brand-copy">
+            <strong>AI For Businesses</strong>
+            <span>Launch your Business Today</span>
+          </div>
+        </div>
+
+        <nav class="nav-links" aria-label="Primary navigation">
+          <a href="#top">Opportunity</a>
+          <a href="#startup-consultation">Consultation</a>
+        </nav>
+      </div>
+    </header>
+
+    <main id="top">
+      <section class="hero">
+        <div class="container hero-grid">
+          <div class="hero-copy">
+            <h1>
+              AI For Businesses is the starting point for those ready to begin turning their vision into reality.
+            </h1>
+
+            <div class="locked-line">
+              We believe people with real business ideas deserve more than encouragement. They deserve structure, direction, and a system that helps them move forward. AI For Businesses exists to help transform an idea into a real public starting point with clarity, professional presentation, and launch-focused support.
+            </div>
+          </div>
+          <div class="hero-visual" aria-label="Business launch visual"></div>
+        </div>
+      </section>
+
+      <section id="needs" class="compact-hero">
+        <div class="container compact-hero-grid">
+          <div class="compact-copy">
+            <h2 class="main-compact">What You Need <span class="headline-accent">→</span> What We Provide</h2>
+
+            <div class="summary-block">
+              <h3>What You Need to Launch</h3>
+              <p>To move from vision to viability, a business needs the right public presence, the right foundation, and the right support behind it.</p>
+            </div>
+
+            <div class="summary-block">
+              <h3>What We Provide</h3>
+              <p>AI For Businesses helps build that launch foundation through structured startup support, professional website development, digital setup, managed guidance, and future-ready business systems.</p>
+            </div>
+          </div>
+
+          <div class="compact-side" aria-label="Structured startup support visual">
+            <h3>Now the offer becomes clear.</h3>
+          </div>
+        </div>
+      </section>
+
+      <section id="provide">
+        <div class="container section-panel">
+          <div class="section-header">
+            <div>
+              <div class="section-tag">Our Professional Services</div>
+              <h2>How AI For Businesses helps build that foundation.</h2>
+            </div>
+            <p>Our role is to turn those requirements into a real starting structure through startup-oriented execution, professional presentation, and guided setup.</p>
+          </div>
+          <div class="provide-grid">
+            <article class="match-card">
+              <strong>Professional Website Development</strong>
+              <p>We create a premium public-facing website that gives the business shape, credibility, and a place for people to understand the offer clearly.</p>
+            </article>
+            <article class="match-card">
+              <strong>Digital Setup and Managed Guidance</strong>
+              <p>We support the domain, deployment, and launch-side setup that helps the business move from concept into a real public presence.</p>
+            </article>
+            <article class="match-card">
+              <strong>Future-Ready Business Systems</strong>
+              <p>We build with growth in mind so the business starts with room to expand into managed services, automations, and stronger operational support.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section id="launch-now" class="cta-section">
+        <div class="container">
+          <div class="cta-card">
+            <div class="cta-card-inner">
+              <h2>You’ve been saying someday. Today can be that day!</h2>
+              <p>
+                The right starting point can change everything about what happens next. AI For Businesses is here for those who are ready to stop leaving the vision in their head and begin building it into something real.
+              </p>
+              <p>
+                We prepare the system that launches you on the path to success with structure, clarity, and professional execution.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="startup-consultation" class="consultation-section">
+        <div class="container">
+          <div class="consultation-shell">
+            <div class="consultation-inner">
+              <div class="consultation-header">
+                <div>
+                  <div class="section-tag">Startup Consultation Intake</div>
+                  <h2>Tell us where you are in the startup journey.</h2>
+                  <p class="consultation-note">This intake is designed specifically for Startup Business Package prospects. Share your current stage, your business direction, and the kind of support you want so we can review your request and follow up with the right next step.</p>
+                </div>
+              </div>
+
+              <form id="startup-consultation-form" novalidate>
+                <input type="hidden" id="source_page" name="source_page" value="opportunity-offering-final.html" />
+
+                <div class="consultation-form-grid">
+                  <div class="consultation-group">
+                    <label class="consultation-label" for="full_name">Full Name *</label>
+                    <input class="consultation-input" type="text" id="full_name" name="full_name" placeholder="Your full name" required />
+                  </div>
+
+                  <div class="consultation-group">
+                    <label class="consultation-label" for="email">Email Address *</label>
+                    <input class="consultation-input" type="email" id="email" name="email" placeholder="you@example.com" required />
+                  </div>
+
+                  <div class="consultation-group">
+                    <label class="consultation-label" for="phone">Phone Number *</label>
+                    <input class="consultation-input" type="tel" id="phone" name="phone" placeholder="(555) 555-5555" required />
+                  </div>
+
+                  <div class="consultation-group">
+                    <label class="consultation-label" for="best_time_to_contact">Best Time to Contact *</label>
+                    <select class="consultation-select" id="best_time_to_contact" name="best_time_to_contact" required>
+                      <option value="">Select best time</option>
+                      <option value="Morning">Morning</option>
+                      <option value="Afternoon">Afternoon</option>
+                      <option value="Evening">Evening</option>
+                      <option value="Flexible">Flexible</option>
+                    </select>
+                  </div>
+
+                  <div class="consultation-group">
+                    <label class="consultation-label" for="business_name">Business Name or Working Business Name</label>
+                    <input class="consultation-input" type="text" id="business_name" name="business_name" placeholder="Business name or working title" />
+                  </div>
+
+                  <div class="consultation-group">
+                    <label class="consultation-label" for="business_type">Business Type / Industry *</label>
+                    <input class="consultation-input" type="text" id="business_type" name="business_type" placeholder="Example: cleaning service, consulting, ecommerce" required />
+                  </div>
+
+                  <div class="consultation-group consultation-group-full">
+                    <label class="consultation-label" for="current_stage">What stage are you currently in? *</label>
+                    <select class="consultation-select" id="current_stage" name="current_stage" required>
+                      <option value="">Select your current stage</option>
+                      <option value="Idea stage">Idea stage</option>
+                      <option value="Planning stage">Planning stage</option>
+                      <option value="Ready to launch">Ready to launch</option>
+                      <option value="Already started but need structure">Already started but need structure</option>
+                    </select>
+                  </div>
+
+                  <div class="consultation-group consultation-group-full">
+                    <label class="consultation-label" for="message">Comments</label>
+                    <textarea class="consultation-textarea" id="message" name="message" placeholder="If you have anything else to share enter it here."></textarea>
+                  </div>
+                </div>
+
+                <div class="consultation-actions">
+                  <button type="submit" id="startup-submit-button" class="btn-primary">Submit Consultation Request</button>
+                </div>
+
+                <div id="startup-form-status" class="consultation-status" aria-live="polite"></div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="container footer-bar">
+        <div>© 2026 AI For Businesses. Launch your Business Today</div>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    const startupConsultationForm = document.getElementById("startup-consultation-form");
+    const startupFormStatus = document.getElementById("startup-form-status");
+    const startupSubmitButton = document.getElementById("startup-submit-button");
+
+    function setStartupStatus(message, type) {
+      startupFormStatus.textContent = message;
+      startupFormStatus.className = "consultation-status" + (type ? " " + type : "");
+    }
+
+    function normalizePhone(value) {
+      return String(value || "").replace(/[^\d]/g, "");
+    }
+
+    function formatPhoneDisplay(value) {
+      const cleaned = normalizePhone(value);
+      if (cleaned.length === 10) {
+        return `(${cleaned.slice(0, 3)}) ${cleaned.slice(3, 6)}-${cleaned.slice(6)}`;
+      }
+      return value;
+    }
+
+    document.getElementById("phone").addEventListener("blur", function () {
+      this.value = formatPhoneDisplay(this.value.trim());
+    });
+
+    startupConsultationForm.addEventListener("submit", async function (event) {
+      event.preventDefault();
+      setStartupStatus("", "");
+
+      const payload = {
+        full_name: document.getElementById("full_name").value.trim(),
+        email: document.getElementById("email").value.trim(),
+        phone: normalizePhone(document.getElementById("phone").value.trim()),
+        best_time_to_contact: document.getElementById("best_time_to_contact").value.trim(),
+        business_name: document.getElementById("business_name").value.trim(),
+        business_type: document.getElementById("business_type").value.trim(),
+        current_stage: document.getElementById("current_stage").value.trim(),
+        message: document.getElementById("message").value.trim(),
+        source_page: document.getElementById("source_page").value,
+        consultation_type: "Startup Business Package"
+      };
+
+      if (!payload.full_name || !payload.email || !payload.phone || !payload.best_time_to_contact || !payload.business_type || !payload.current_stage) {
+        setStartupStatus("Please complete all required fields before submitting your consultation request.", "error");
+        return;
+      }
+
+      const originalButtonText = startupSubmitButton.textContent;
+      startupSubmitButton.disabled = true;
+      startupSubmitButton.textContent = "Submitting...";
+
+      try {
+        const response = await fetch("/.netlify/functions/submit-startup-consultation", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(payload)
+        });
+
+        let result = {};
+        try {
+          result = await response.json();
+        } catch (jsonError) {
+          result = {};
+        }
+
+        if (!response.ok || !result.success) {
+          throw new Error(result.error || "Submission failed. Please try again.");
+        }
+
+        startupConsultationForm.reset();
+        setStartupStatus("Your consultation request has been submitted successfully. We will review your intake and follow up with you soon.", "success");
+      } catch (error) {
+        setStartupStatus(error && error.message ? error.message : "Submission failed. Please try again.", "error");
+      } finally {
+        startupSubmitButton.disabled = false;
+        startupSubmitButton.textContent = originalButtonText;
+      }
+    });
+  </script>
+</body>
+</html>

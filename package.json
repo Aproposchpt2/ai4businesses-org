@@ -1,0 +1,22 @@
+{
+  "name": "ai4businesses-site",
+  "version": "1.0.0",
+  "description": "AI4 Businesses — FlowDesk Pro promotional site by Apropos Group LLC",
+  "private": true,
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "scripts": {
+    "dev": "netlify dev",
+    "build": "echo 'Static site — no build step required'",
+    "deploy": "netlify deploy --prod"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.43.4",
+    "@anthropic-ai/sdk": "^0.24.0",
+    "openai": "^4.52.0"
+  },
+  "devDependencies": {
+    "netlify-cli": "^17.0.0"
+  }
+}
