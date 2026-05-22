@@ -1,0 +1,1123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>How Businesses Are Using AI to Reduce Operating Costs | AI4 Businesses</title>
+  <meta name="description" content="Learn how businesses are using AI to reduce operating costs by improving customer response, automating intake, organizing follow-up, and reducing manual workflow tasks."/>
+  <meta name="keywords" content="AI reduce operating costs, business AI automation, customer intake automation, workflow automation, missed call capture, AI customer response, business process automation"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500;600&family=Syncopate:wght@400;700&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --black:      #020407;
+      --deep:       #060C14;
+      --surface:    #0A1220;
+      --panel:      #0E1928;
+      --panel-soft: rgba(14,25,40,0.78);
+      --border:     rgba(74,127,255,0.15);
+      --blue:       #4A7FFF;
+      --blue-bright:#6B9FFF;
+      --blue-dim:   rgba(74,127,255,0.25);
+      --chrome:     #C8D8F0;
+      --platinum:   #E8F0FF;
+      --white:      #F5F8FF;
+      --text:       #A8B8D0;
+      --muted:      #586880;
+      --gold:       #C8A84B;
+      --gold-light: #E2C97E;
+      --gold-dim:   rgba(200,168,75,0.25);
+      --green:      #6ECFA0;
+      --glow-blue:  0 0 60px rgba(74,127,255,0.3);
+      --radius:     6px;
+      --radius-lg:  12px;
+      --radius-xl:  18px;
+      --ease:       cubic-bezier(0.16,1,0.3,1);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--black);
+      color: var(--text);
+      font-family: "DM Sans", sans-serif;
+      font-weight: 300;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background-image:
+        radial-gradient(circle at 20% 10%, rgba(74,127,255,0.12), transparent 26rem),
+        radial-gradient(circle at 85% 18%, rgba(200,168,75,0.08), transparent 22rem),
+        radial-gradient(circle at 50% 90%, rgba(74,127,255,0.08), transparent 28rem),
+        url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    ::-webkit-scrollbar { width: 3px; }
+    ::-webkit-scrollbar-track { background: var(--black); }
+    ::-webkit-scrollbar-thumb { background: var(--blue-dim); border-radius: 2px; }
+
+    h1, h2, h3 {
+      font-family: "Cormorant Garamond", serif;
+      font-weight: 300;
+      color: var(--white);
+      letter-spacing: 0.02em;
+    }
+
+    p { color: var(--text); }
+    a { color: inherit; }
+
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 2rem;
+      padding: 1.2rem 3rem;
+      background: linear-gradient(to bottom, rgba(2,4,7,0.98), transparent);
+      transition: background 0.4s var(--ease), border-color 0.4s var(--ease), backdrop-filter 0.4s var(--ease);
+    }
+
+    nav.scrolled {
+      background: rgba(2,4,7,0.97);
+      border-bottom: 1px solid var(--border);
+      backdrop-filter: blur(20px);
+    }
+
+    .nav-brand {
+      font-family: "Syncopate", sans-serif;
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      color: var(--blue-bright);
+      text-transform: uppercase;
+      text-decoration: none;
+      line-height: 1.4;
+      flex: 0 0 auto;
+    }
+
+    .nav-brand span {
+      display: block;
+      font-size: 0.5rem;
+      color: var(--muted);
+      letter-spacing: 0.15em;
+      margin-top: 2px;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 1.6rem;
+      list-style: none;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .nav-links a {
+      font-size: 0.68rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--text);
+      text-decoration: none;
+      transition: color 0.25s;
+      white-space: nowrap;
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active { color: var(--blue-bright); }
+
+    .nav-cta,
+    .btn-primary,
+    .btn-ghost {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      padding: 0.9rem 2.1rem;
+      border-radius: 100px;
+      font-family: "DM Sans", sans-serif;
+      font-size: 0.74rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      text-decoration: none;
+      cursor: pointer;
+      transition: background 0.3s, border-color 0.3s, color 0.3s, box-shadow 0.3s, transform 0.2s;
+    }
+
+    .nav-cta,
+    .btn-primary {
+      background: var(--blue);
+      color: var(--white);
+      border: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .nav-cta:hover,
+    .btn-primary:hover {
+      background: var(--blue-bright);
+      box-shadow: var(--glow-blue);
+      transform: translateY(-1px);
+    }
+
+    .btn-ghost {
+      background: rgba(74,127,255,0.04);
+      color: var(--chrome);
+      border: 1px solid rgba(74,127,255,0.3);
+    }
+
+    .btn-ghost:hover {
+      border-color: var(--blue);
+      color: var(--blue-bright);
+      transform: translateY(-1px);
+    }
+
+    section { position: relative; z-index: 1; }
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 3rem; }
+    .section-pad { padding: 7rem 0; }
+
+    .section-label {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 1rem;
+    }
+
+    .section-label::before {
+      content: "";
+      width: 22px;
+      height: 1px;
+      background: var(--blue);
+      display: block;
+    }
+
+    .section-label span {
+      font-family: "Syncopate", sans-serif;
+      font-size: 0.57rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--blue-bright);
+    }
+
+    .section-title {
+      font-size: clamp(2rem, 3.2vw, 3.5rem);
+      line-height: 1.1;
+      margin-bottom: 1.2rem;
+    }
+
+    .section-desc {
+      font-size: 0.98rem;
+      color: var(--text);
+      max-width: 680px;
+      line-height: 1.85;
+    }
+
+    #hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding: 9rem 0 6rem;
+      overflow: hidden;
+      background:
+        linear-gradient(135deg, rgba(74,127,255,0.08) 0%, transparent 44%),
+        linear-gradient(180deg, rgba(2,4,7,0.12) 0%, var(--black) 100%);
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      gap: 5rem;
+      align-items: center;
+    }
+
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 1.6rem;
+    }
+
+    .hero-eyebrow::before {
+      content: "";
+      width: 32px;
+      height: 1px;
+      background: var(--blue);
+      display: block;
+    }
+
+    .hero-eyebrow span {
+      font-family: "Syncopate", sans-serif;
+      font-size: 0.58rem;
+      letter-spacing: 0.25em;
+      color: var(--blue-bright);
+      text-transform: uppercase;
+    }
+
+    .hero-headline {
+      font-size: clamp(2.8rem, 6vw, 6.2rem);
+      line-height: 0.96;
+      margin-bottom: 1.8rem;
+    }
+
+    .hero-headline em {
+      color: var(--blue-bright);
+      font-style: italic;
+    }
+
+    .hero-sub {
+      font-size: 1.08rem;
+      max-width: 690px;
+      line-height: 1.85;
+      margin-bottom: 2.6rem;
+      color: var(--chrome);
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .hero-panel {
+      position: relative;
+      border: 1px solid rgba(74,127,255,0.22);
+      border-radius: var(--radius-xl);
+      background:
+        linear-gradient(135deg, rgba(74,127,255,0.15) 0%, rgba(14,25,40,0.92) 54%, rgba(2,4,7,0.88) 100%);
+      box-shadow: 0 24px 80px rgba(0,0,0,0.35), 0 0 80px rgba(74,127,255,0.12);
+      padding: 2rem;
+      overflow: hidden;
+    }
+
+    .hero-panel::before {
+      content: "";
+      position: absolute;
+      inset: -40%;
+      background:
+        radial-gradient(circle, rgba(74,127,255,0.14) 0%, transparent 32%),
+        conic-gradient(from 0deg, transparent, rgba(74,127,255,0.16), transparent, rgba(200,168,75,0.12), transparent);
+      animation: rotateGlow 18s linear infinite;
+      opacity: 0.82;
+    }
+
+    .panel-inner {
+      position: relative;
+      z-index: 1;
+      background: rgba(2,4,7,0.58);
+      border: 1px solid rgba(255,255,255,0.05);
+      border-radius: var(--radius-lg);
+      padding: 2rem;
+      backdrop-filter: blur(18px);
+    }
+
+    .signal-row {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 1rem;
+      align-items: start;
+      padding: 1rem 0;
+      border-bottom: 1px solid rgba(74,127,255,0.14);
+    }
+
+    .signal-row:last-child { border-bottom: none; }
+
+    .signal-dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: var(--blue-bright);
+      box-shadow: 0 0 20px rgba(74,127,255,0.75);
+      margin-top: 0.54rem;
+    }
+
+    .signal-title {
+      font-family: "Cormorant Garamond", serif;
+      font-size: 1.25rem;
+      color: var(--white);
+      margin-bottom: 0.2rem;
+    }
+
+    .signal-copy {
+      font-size: 0.86rem;
+      color: var(--text);
+      line-height: 1.7;
+    }
+
+    #intro {
+      background: linear-gradient(180deg, var(--black) 0%, var(--deep) 100%);
+      border-top: 1px solid var(--border);
+    }
+
+    .intro-card {
+      max-width: 980px;
+      padding: 3rem;
+      border: 1px solid rgba(74,127,255,0.2);
+      border-radius: var(--radius-xl);
+      background: linear-gradient(135deg, rgba(74,127,255,0.11) 0%, rgba(10,18,32,0.9) 70%);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.05);
+    }
+
+    .intro-card p {
+      font-size: 1.05rem;
+      line-height: 1.9;
+      margin-bottom: 1.1rem;
+    }
+
+    .intro-card p:last-child { margin-bottom: 0; }
+
+    #cost-problem {
+      background: var(--deep);
+      border-top: 1px solid var(--border);
+    }
+
+    .two-col {
+      display: grid;
+      grid-template-columns: 0.9fr 1.1fr;
+      gap: 5rem;
+      align-items: start;
+    }
+
+    .cost-list {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 1rem;
+    }
+
+    .cost-item {
+      border: 1px solid rgba(74,127,255,0.2);
+      background: rgba(10,18,32,0.74);
+      border-radius: var(--radius-lg);
+      padding: 1.25rem 1.3rem;
+      color: var(--chrome);
+      display: flex;
+      gap: 0.8rem;
+      align-items: flex-start;
+      min-height: 84px;
+    }
+
+    .cost-item::before {
+      content: "◇";
+      color: var(--blue-bright);
+      font-size: 0.8rem;
+      line-height: 1.7;
+      flex: 0 0 auto;
+    }
+
+    #use-cases {
+      background: linear-gradient(180deg, var(--deep) 0%, var(--black) 100%);
+      border-top: 1px solid var(--border);
+    }
+
+    .use-header {
+      text-align: center;
+      margin-bottom: 4.5rem;
+    }
+
+    .use-header .section-label { justify-content: center; }
+    .use-header .section-desc { margin: 0 auto; }
+
+    .use-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 1.2rem;
+    }
+
+    .use-card {
+      position: relative;
+      padding: 2rem;
+      background:
+        linear-gradient(135deg, rgba(74,127,255,0.12) 0%, rgba(74,127,255,0.04) 46%, rgba(10,18,32,0.92) 100%);
+      border: 1px solid rgba(74,127,255,0.24);
+      border-radius: var(--radius-xl);
+      overflow: hidden;
+      transition: transform 0.3s var(--ease), border-color 0.3s var(--ease), box-shadow 0.3s var(--ease);
+    }
+
+    .use-card::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 2rem;
+      right: 2rem;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(107,159,255,0.75), transparent);
+    }
+
+    .use-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(74,127,255,0.52);
+      box-shadow: 0 16px 46px rgba(74,127,255,0.14);
+    }
+
+    .use-card h3 {
+      font-size: 1.45rem;
+      font-weight: 400;
+      margin-bottom: 1.2rem;
+    }
+
+    .card-block {
+      margin-top: 1rem;
+      padding-top: 1rem;
+      border-top: 1px solid rgba(74,127,255,0.12);
+    }
+
+    .card-label {
+      font-family: "Syncopate", sans-serif;
+      font-size: 0.54rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--blue-bright);
+      margin-bottom: 0.4rem;
+    }
+
+    .card-block p {
+      font-size: 0.88rem;
+      line-height: 1.76;
+    }
+
+    #flowdesk {
+      background:
+        linear-gradient(135deg, rgba(74,127,255,0.08), transparent 54%),
+        var(--surface);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .feature-panel {
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      gap: 4rem;
+      align-items: center;
+      background: rgba(2,4,7,0.26);
+      border: 1px solid rgba(74,127,255,0.2);
+      border-radius: var(--radius-xl);
+      padding: 3rem;
+    }
+
+    .workflow-stack {
+      display: grid;
+      gap: 0.85rem;
+    }
+
+    .workflow-step {
+      padding: 1.1rem 1.25rem;
+      border: 1px solid rgba(74,127,255,0.2);
+      border-radius: var(--radius-lg);
+      background: rgba(10,18,32,0.82);
+      color: var(--chrome);
+      font-size: 0.9rem;
+    }
+
+    .workflow-step span {
+      color: var(--blue-bright);
+      font-family: "Syncopate", sans-serif;
+      font-size: 0.54rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      display: block;
+      margin-bottom: 0.28rem;
+    }
+
+    #workflow-review {
+      background: var(--black);
+    }
+
+    .review-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: start;
+    }
+
+    .review-list {
+      display: grid;
+      gap: 0.8rem;
+    }
+
+    .review-list li {
+      list-style: none;
+      padding: 1rem 1.2rem;
+      border: 1px solid rgba(74,127,255,0.18);
+      border-radius: var(--radius-lg);
+      background: rgba(14,25,40,0.72);
+      color: var(--chrome);
+      display: flex;
+      gap: 0.8rem;
+    }
+
+    .review-list li::before {
+      content: "→";
+      color: var(--blue-bright);
+      flex: 0 0 auto;
+    }
+
+    .review-box {
+      border: 1px solid rgba(200,168,75,0.22);
+      background: linear-gradient(135deg, rgba(200,168,75,0.08), rgba(14,25,40,0.9));
+      border-radius: var(--radius-xl);
+      padding: 2.5rem;
+      box-shadow: 0 18px 60px rgba(0,0,0,0.25);
+    }
+
+    .review-box h3 {
+      font-size: 1.8rem;
+      margin-bottom: 1rem;
+    }
+
+    .review-box p {
+      margin-bottom: 1.6rem;
+    }
+
+    #final-cta {
+      background: linear-gradient(135deg, rgba(74,127,255,0.1) 0%, var(--black) 72%);
+      border-top: 1px solid var(--border);
+      text-align: center;
+    }
+
+    .final-cta-inner {
+      max-width: 760px;
+      margin: 0 auto;
+    }
+
+    .final-cta-inner .section-label {
+      justify-content: center;
+    }
+
+    .final-cta-inner p {
+      font-size: 1rem;
+      line-height: 1.85;
+      margin: 1.2rem 0 2.4rem;
+    }
+
+    .final-cta-actions {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    footer {
+      background: var(--black);
+      border-top: 1px solid var(--border);
+      padding: 3.5rem;
+      z-index: 1;
+      position: relative;
+    }
+
+    .footer-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr;
+      gap: 3rem;
+    }
+
+    .footer-brand p {
+      font-size: 0.85rem;
+      color: var(--muted);
+      line-height: 1.7;
+      max-width: 320px;
+      margin-top: 0.8rem;
+    }
+
+    .footer-logo {
+      font-family: "Syncopate", sans-serif;
+      font-size: 0.75rem;
+      letter-spacing: 0.15em;
+      color: var(--blue-bright);
+    }
+
+    .footer-col h4 {
+      font-family: "Syncopate", sans-serif;
+      font-size: 0.57rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--blue-bright);
+      margin-bottom: 1.2rem;
+    }
+
+    .footer-col ul { list-style: none; }
+    .footer-col ul li { margin-bottom: 0.6rem; }
+
+    .footer-col ul li a {
+      font-size: 0.85rem;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.25s;
+    }
+
+    .footer-col ul li a:hover { color: var(--blue-bright); }
+
+    .footer-bottom {
+      max-width: 1200px;
+      margin: 2.5rem auto 0;
+      padding-top: 1.8rem;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .footer-bottom p {
+      font-size: 0.75rem;
+      color: var(--muted);
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.8s var(--ease), transform 0.8s var(--ease);
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @keyframes rotateGlow {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    @media (max-width: 1024px) {
+      nav { padding: 1.2rem 2rem; }
+      .nav-links { display: none; }
+      .container { padding: 0 2rem; }
+      .hero-grid,
+      .two-col,
+      .feature-panel,
+      .review-grid {
+        grid-template-columns: 1fr;
+        gap: 3rem;
+      }
+      .hero-panel { order: -1; }
+      .use-grid,
+      .cost-list {
+        grid-template-columns: 1fr;
+      }
+      .footer-inner {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 640px) {
+      #hero { padding-top: 8rem; }
+      .section-pad { padding: 5rem 0; }
+      .container { padding: 0 1.5rem; }
+      nav { padding: 1rem 1.5rem; }
+      .nav-cta { padding: 0.72rem 1.2rem; font-size: 0.64rem; }
+      .hero-headline { font-size: clamp(2.5rem, 14vw, 4.4rem); }
+      .hero-actions,
+      .final-cta-actions {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .intro-card,
+      .feature-panel,
+      .review-box {
+        padding: 1.6rem;
+      }
+      .use-card { padding: 1.6rem; }
+      footer { padding: 3rem 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="nav">
+  <a href="index.html#hero" class="nav-brand">AI4 Businesses<span>by Apropos Group LLC</span></a>
+  <ul class="nav-links">
+    <li><a href="index.html#products">Systems</a></li>
+    <li><a href="index.html#calculator">Live Demo</a></li>
+    <li><a href="ai-cost-reduction.html" class="active">AI Cost Reduction</a></li>
+    <li><a href="#workflow-review">Workflow Review</a></li>
+    <li><a href="index.html#about">About</a></li>
+  </ul>
+  <a href="#workflow-review" class="nav-cta">Request Review</a>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="container">
+    <div class="hero-grid">
+      <div class="hero-content reveal">
+        <div class="hero-eyebrow"><span>Executive Advisory Resource</span></div>
+        <h1 class="hero-headline">How Businesses Are Using AI to <em>Reduce Operating Costs</em></h1>
+        <p class="hero-sub">This is already happening. Smart businesses are using AI operationally — not just experimentally — to reduce manual work, capture missed opportunities, and improve customer response. You may be behind if you are not looking at this.</p>
+        <div class="hero-actions">
+          <a href="#workflow-review" class="btn-primary">Request an AI Workflow Review</a>
+          <a href="https://aiflowdeskpro.com" target="_blank" rel="noopener" class="btn-ghost">See FlowDesk Pro in Action</a>
+        </div>
+      </div>
+
+      <div class="hero-panel reveal">
+        <div class="panel-inner">
+          <div class="signal-row">
+            <span class="signal-dot"></span>
+            <div>
+              <div class="signal-title">Capture Missed Activity</div>
+              <p class="signal-copy">Organize incoming calls, requests, and customer details before they disappear into voicemail, email, or scattered notes.</p>
+            </div>
+          </div>
+          <div class="signal-row">
+            <span class="signal-dot"></span>
+            <div>
+              <div class="signal-title">Reduce Repeated Manual Work</div>
+              <p class="signal-copy">Use structured workflows to prepare intake, follow-up, internal notes, and dashboard visibility.</p>
+            </div>
+          </div>
+          <div class="signal-row">
+            <span class="signal-dot"></span>
+            <div>
+              <div class="signal-title">Improve Response Visibility</div>
+              <p class="signal-copy">Give owners and teams a clearer view of what needs attention from desktop, tablet, or mobile.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- INTRO ADVISORY -->
+<section id="intro" class="section-pad">
+  <div class="container">
+    <div class="intro-card reveal">
+      <div class="section-label"><span>Advisory Overview</span></div>
+      <h2 class="section-title">AI is moving from experiment to operation.</h2>
+      <p>AI is no longer just something businesses are testing. It is becoming part of how companies reduce operating costs, respond faster, organize customer information, and remove repeated manual work.</p>
+      <p>The opportunity is not to replace everything overnight. The opportunity is to identify the workflows that are costing time, money, and missed opportunity — then use AI-powered systems to make those workflows more efficient.</p>
+      <p>AI4 Businesses provides this advisory resource for free to help business owners understand where AI can create practical operational value.</p>
+    </div>
+  </div>
+</section>
+
+<!-- REAL COST PROBLEM -->
+<section id="cost-problem" class="section-pad">
+  <div class="container">
+    <div class="two-col">
+      <div class="reveal">
+        <div class="section-label"><span>The Real Cost Problem</span></div>
+        <h2 class="section-title">The expensive problems are often hidden inside daily operations.</h2>
+        <p class="section-desc">Many business owners look for cost reduction in obvious places. The operational waste is often less visible: delayed response, manual tracking, scattered information, repeated admin tasks, and unclear ownership of the next step.</p>
+      </div>
+      <div class="cost-list reveal">
+        <div class="cost-item">Missed calls</div>
+        <div class="cost-item">Slow follow-up</div>
+        <div class="cost-item">Manual data entry</div>
+        <div class="cost-item">Repeated admin tasks</div>
+        <div class="cost-item">Scattered customer information</div>
+        <div class="cost-item">No clear dashboard</div>
+        <div class="cost-item">Leads sitting in voicemail, email, text messages, or spreadsheets</div>
+        <div class="cost-item">Staff time spent chasing updates instead of serving customers</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- USE CASE GRID -->
+<section id="use-cases" class="section-pad">
+  <div class="container">
+    <div class="use-header reveal">
+      <div class="section-label"><span>Operational Use Cases</span></div>
+      <h2 class="section-title">Where AI can create practical business value.</h2>
+      <p class="section-desc">The strongest use cases start with the workflow. The goal is to find the point where time, money, response speed, or visibility is being lost — then improve that process with structured automation.</p>
+    </div>
+
+    <div class="use-grid">
+      <article class="use-card reveal">
+        <h3>Missed Call Capture</h3>
+        <div class="card-block">
+          <div class="card-label">Problem</div>
+          <p>Many businesses lose opportunities because calls are missed while the owner or staff is busy. The caller may leave no voicemail, call a competitor, or never follow up.</p>
+        </div>
+        <div class="card-block">
+          <div class="card-label">AI Use</div>
+          <p>An AI-supported intake system can answer or capture the call, collect the caller’s name, phone number, urgency, and reason for contact, then route that information into email alerts and a live dashboard.</p>
+        </div>
+        <div class="card-block">
+          <div class="card-label">Business Value</div>
+          <p>The business gains faster response visibility, fewer lost inquiries, and a clearer process for follow-up.</p>
+        </div>
+      </article>
+
+      <article class="use-card reveal">
+        <h3>Customer Intake Automation</h3>
+        <div class="card-block">
+          <div class="card-label">Problem</div>
+          <p>Customer requests often arrive through forms, phone calls, emails, text messages, and social channels with no consistent structure.</p>
+        </div>
+        <div class="card-block">
+          <div class="card-label">AI Use</div>
+          <p>A structured intake workflow can collect the right information, organize the request, and prepare it for review.</p>
+        </div>
+        <div class="card-block">
+          <div class="card-label">Business Value</div>
+          <p>The business spends less time chasing missing details and more time responding with clarity.</p>
+        </div>
+      </article>
+
+      <article class="use-card reveal">
+        <h3>Lead Follow-Up Workflows</h3>
+        <div class="card-block">
+          <div class="card-label">Problem</div>
+          <p>Follow-up is often delayed because the next step depends on memory, manual notes, or someone checking multiple inboxes.</p>
+        </div>
+        <div class="card-block">
+          <div class="card-label">AI Use</div>
+          <p>Automation can create reminders, status updates, follow-up tasks, and internal alerts.</p>
+        </div>
+        <div class="card-block">
+          <div class="card-label">Business Value</div>
+          <p>The business gains a more consistent response process and reduces missed follow-up.</p>
+        </div>
+      </article>
+
+      <article class="use-card reveal">
+        <h3>CRM / Dashboard Visibility</h3>
+        <div class="card-block">
+          <div class="card-label">Problem</div>
+          <p>When customer information is scattered, owners and teams do not know what needs attention.</p>
+        </div>
+        <div class="card-block">
+          <div class="card-label">AI Use</div>
+          <p>A dashboard can organize new requests, call records, urgency, status, and next actions.</p>
+        </div>
+        <div class="card-block">
+          <div class="card-label">Business Value</div>
+          <p>The business gains one place to review activity from desktop, tablet, or mobile.</p>
+        </div>
+      </article>
+
+      <article class="use-card reveal">
+        <h3>Appointment Request Routing</h3>
+        <div class="card-block">
+          <div class="card-label">Problem</div>
+          <p>Requests for appointments or consultations can arrive without enough context, urgency, or ownership of the next step.</p>
+        </div>
+        <div class="card-block">
+          <div class="card-label">AI Use</div>
+          <p>A routing workflow can collect request details, identify priority, and send the information to the right internal review path for human confirmation.</p>
+        </div>
+        <div class="card-block">
+          <div class="card-label">Business Value</div>
+          <p>The business gets a cleaner handoff process without relying on scattered notes or memory.</p>
+        </div>
+      </article>
+
+      <article class="use-card reveal">
+        <h3>Internal Admin Support</h3>
+        <div class="card-block">
+          <div class="card-label">Problem</div>
+          <p>Many hours are lost copying, sorting, summarizing, and organizing routine information.</p>
+        </div>
+        <div class="card-block">
+          <div class="card-label">AI Use</div>
+          <p>AI-supported workflows can summarize records, organize submissions, and prepare internal notes.</p>
+        </div>
+        <div class="card-block">
+          <div class="card-label">Business Value</div>
+          <p>The business reduces repetitive admin work and improves operational clarity.</p>
+        </div>
+      </article>
+
+      <article class="use-card reveal">
+        <h3>Report / Summary Automation</h3>
+        <div class="card-block">
+          <div class="card-label">Problem</div>
+          <p>Owners and managers often need quick summaries but spend time reading through long notes, submissions, or activity records.</p>
+        </div>
+        <div class="card-block">
+          <div class="card-label">AI Use</div>
+          <p>AI-supported summaries can turn captured activity into clearer internal notes, status snapshots, and next-action reviews.</p>
+        </div>
+        <div class="card-block">
+          <div class="card-label">Business Value</div>
+          <p>Teams can review important information faster and make better use of the data already being collected.</p>
+        </div>
+      </article>
+
+      <article class="use-card reveal">
+        <h3>Website Intake + Payment Workflow</h3>
+        <div class="card-block">
+          <div class="card-label">Problem</div>
+          <p>Customer interest can stall when intake, qualification, payment, and next-step instructions are separated across disconnected tools.</p>
+        </div>
+        <div class="card-block">
+          <div class="card-label">AI Use</div>
+          <p>A structured website intake and payment workflow can guide the customer through information capture, routing, and the correct next step.</p>
+        </div>
+        <div class="card-block">
+          <div class="card-label">Business Value</div>
+          <p>The business gains a cleaner path from inquiry to action with fewer manual handoffs.</p>
+        </div>
+      </article>
+
+      <article class="use-card reveal">
+        <h3>Customer Response Notifications</h3>
+        <div class="card-block">
+          <div class="card-label">Problem</div>
+          <p>Customer activity can be missed when the team depends on checking several inboxes or waiting for someone to notice a new request.</p>
+        </div>
+        <div class="card-block">
+          <div class="card-label">AI Use</div>
+          <p>Notification workflows can send email alerts and update dashboard records when a new request or call activity needs attention.</p>
+        </div>
+        <div class="card-block">
+          <div class="card-label">Business Value</div>
+          <p>The business gains faster awareness of incoming activity and a more visible response process.</p>
+        </div>
+      </article>
+
+      <article class="use-card reveal">
+        <h3>AI Workflow Review</h3>
+        <div class="card-block">
+          <div class="card-label">Problem</div>
+          <p>Many businesses buy software before identifying the actual workflow problem that is costing time, money, or missed opportunity.</p>
+        </div>
+        <div class="card-block">
+          <div class="card-label">AI Use</div>
+          <p>A workflow review maps the first practical automation target, the human-controlled steps, and the system that should be built first.</p>
+        </div>
+        <div class="card-block">
+          <div class="card-label">Business Value</div>
+          <p>The business gets a practical starting point instead of trying to automate everything at once.</p>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- FLOWDESK PRO EXAMPLE -->
+<section id="flowdesk" class="section-pad">
+  <div class="container">
+    <div class="feature-panel reveal">
+      <div>
+        <div class="section-label"><span>Example System</span></div>
+        <h2 class="section-title">FlowDesk Pro: One Example of AI-Powered Operational Savings</h2>
+        <p class="section-desc">FlowDesk Pro is one example of how AI-powered workflow systems can reduce operational waste.</p>
+        <p class="section-desc" style="margin-top:1rem;">When a customer calls or submits a request, the system can capture important details, identify urgency, send email alerts, and update a live dashboard accessible from desktop, tablet, or mobile.</p>
+        <p class="section-desc" style="margin-top:1rem;">Instead of relying only on voicemail, email, or manual follow-up, the business gains a structured response system designed to work around the clock.</p>
+        <div class="hero-actions" style="margin-top:2rem;">
+          <a href="https://aiflowdeskpro.com" target="_blank" rel="noopener" class="btn-primary">See FlowDesk Pro in Action</a>
+        </div>
+      </div>
+
+      <div class="workflow-stack">
+        <div class="workflow-step"><span>Capture</span>Call or request details are collected into a structured record.</div>
+        <div class="workflow-step"><span>Prioritize</span>Urgency and reason for contact are made visible for review.</div>
+        <div class="workflow-step"><span>Notify</span>Email alerts and dashboard updates help the team see what needs attention.</div>
+        <div class="workflow-step"><span>Review</span>Owners and teams can access activity from desktop, tablet, or mobile.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ADVISORY OFFER -->
+<section id="workflow-review" class="section-pad">
+  <div class="container">
+    <div class="review-grid">
+      <div class="reveal">
+        <div class="section-label"><span>Advisory Offer</span></div>
+        <h2 class="section-title">Start With an AI Workflow Review</h2>
+        <p class="section-desc">Before buying more software or hiring more help, business owners should understand where AI can actually create value.</p>
+      </div>
+      <div class="review-box reveal">
+        <h3>The AI Workflow Review helps identify:</h3>
+        <ul class="review-list">
+          <li>Where manual work is costing time</li>
+          <li>Where missed calls or slow follow-up may be costing revenue</li>
+          <li>Which workflows are ready for automation</li>
+          <li>Which tasks should remain human-controlled</li>
+          <li>What system should be built first</li>
+          <li>What the likely business impact may be</li>
+        </ul>
+        <div class="hero-actions" style="margin-top:2rem;">
+          <a href="#final-cta" class="btn-primary">Request an AI Workflow Review</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FINAL CTA -->
+<section id="final-cta" class="section-pad">
+  <div class="container">
+    <div class="final-cta-inner reveal">
+      <div class="section-label"><span>Find the Starting Point</span></div>
+      <h2 class="section-title">You do not need to automate your entire business overnight.</h2>
+      <p>You need to identify the first workflow that is costing time, money, or missed opportunity — then fix that system first.</p>
+      <p>AI4 Businesses can help you find that starting point.</p>
+      <div class="final-cta-actions">
+        <a href="#workflow-review" class="btn-primary">Request Your AI Workflow Review</a>
+        <a href="https://aiflowdeskpro.com" target="_blank" rel="noopener" class="btn-ghost">See FlowDesk Pro in Action</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <div class="footer-logo">AI4 Businesses</div>
+      <p>The central promotional hub for the AI4 Businesses automation ecosystem. Practical systems for companies that need real automation — not theory, not hype.</p>
+      <p style="margin-top:0.8rem;font-size:0.75rem;">Las Vegas, Nevada · ai4businesses.org</p>
+    </div>
+    <div class="footer-col">
+      <h4>Systems</h4>
+      <ul>
+        <li><a href="https://auto-attendant.aiflowdeskpro.com" target="_blank" rel="noopener">Smart Auto-Attendant</a></li>
+        <li><a href="https://lead-management.aiflowdeskpro.com" target="_blank" rel="noopener">Lead Manager</a></li>
+        <li><a href="https://aiflowdeskpro.com" target="_blank" rel="noopener">FlowDesk Pro</a></li>
+        <li><a href="index.html#calculator">Business Intake System</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Company</h4>
+      <ul>
+        <li><a href="index.html#about">About Apropos Group</a></li>
+        <li><a href="index.html#intake">Request a Demo</a></li>
+        <li><a href="ai-cost-reduction.html">How Businesses Are Using AI to Reduce Operating Costs</a></li>
+        <li><a href="mailto:support@ai4businesses.org">Contact Us</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>&copy; <span id="year"></span> Apropos Group LLC. All rights reserved.</p>
+    <p>AI4 Businesses · FlowDesk Pro · Las Vegas, NV</p>
+  </div>
+</footer>
+
+<script>
+  const nav = document.getElementById("nav");
+  window.addEventListener("scroll", () => {
+    nav.classList.toggle("scrolled", window.scrollY > 60);
+  });
+
+  document.getElementById("year").textContent = new Date().getFullYear();
+
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach((entry, index) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => entry.target.classList.add("visible"), index * 70);
+        obs.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll(".reveal").forEach((el) => obs.observe(el));
+</script>
+</body>
+</html>
