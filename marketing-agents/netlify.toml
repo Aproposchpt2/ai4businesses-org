@@ -1,0 +1,40 @@
+# AI4 Marketing Agent Team — Netlify Configuration
+# Deploys agents as Netlify Scheduled Functions
+# Repo: Aproposchpt2/ai4businesses-org
+
+[build]
+  functions = "netlify/functions"
+  publish = "."
+
+# ── SCHEDULED FUNCTIONS ──────────────────────────────────────
+# These run automatically — zero owner involvement required
+
+[[plugins]]
+  package = "@netlify/plugin-cron"
+
+[functions."monday-commander"]
+  schedule = "0 6 * * 1"    # Every Monday 6:00 AM PST
+
+[functions."tuesday-writer"]
+  schedule = "0 7 * * 2"    # Every Tuesday 7:00 AM PST
+
+[functions."wednesday-pipeline"]
+  schedule = "0 7 * * 3"    # Every Wednesday 7:00 AM PST
+
+[functions."sunday-analytics"]
+  schedule = "0 18 * * 0"   # Every Sunday 6:00 PM PST
+
+# ── ENVIRONMENT VARIABLES ─────────────────────────────────────
+# Set these in Netlify Dashboard → Environment Variables
+# GOOGLE_CLIENT_ID
+# GOOGLE_CLIENT_SECRET
+# BUFFER_ACCESS_TOKEN
+# BUFFER_LINKEDIN_PROFILE_ID
+# BUFFER_FACEBOOK_PROFILE_ID
+# BUFFER_INSTAGRAM_PROFILE_ID
+# BUFFER_TIKTOK_PROFILE_ID
+# CANVA_API_KEY
+# CANVA_BRAND_KIT_ID
+# GITHUB_TOKEN
+# RESEND_API_KEY
+# OWNER_EMAIL
