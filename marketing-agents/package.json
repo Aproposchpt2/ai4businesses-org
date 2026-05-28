@@ -1,0 +1,25 @@
+{
+  "name": "ai4-marketing-agent-team",
+  "version": "1.0.0",
+  "description": "Autonomous AI marketing agent team for AI4 Businesses",
+  "main": "orchestrator.js",
+  "scripts": {
+    "start": "node orchestrator.js",
+    "test": "node orchestrator.js test",
+    "oauth": "node oauth-setup.js",
+    "monday": "node -e \"const O = require('./orchestrator'); new O().runMonday()\"",
+    "tuesday": "node -e \"const O = require('./orchestrator'); new O().runTuesday()\"",
+    "wednesday": "node -e \"const O = require('./orchestrator'); new O().runWednesday()\"",
+    "sunday": "node -e \"const O = require('./orchestrator'); new O().runSunday()\""
+  },
+  "dependencies": {
+    "dotenv": "^16.0.0",
+    "node-cron": "^3.0.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "author": "AI4 Businesses — Command Advisor II",
+  "license": "UNLICENSED",
+  "private": true
+}
