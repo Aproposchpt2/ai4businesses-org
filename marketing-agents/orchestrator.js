@@ -1,3 +1,4 @@
+require('dotenv').config();
 // ═══════════════════════════════════════════════════════════════
 // MASTER ORCHESTRATOR — AI4 MARKETING AGENT TEAM
 // Runs the complete weekly pipeline
@@ -53,7 +54,7 @@ class MarketingOrchestrator {
     let analyticsReport = null;
     try {
       const fs = require('fs').promises;
-      const data = await fs.readFile('/tmp/analytics-report.json', 'utf8');
+      const data = await fs.readFile('C:/temp/analytics-report.json', 'utf8');
       analyticsReport = JSON.parse(data);
       console.log('📊 Loaded last week\'s analytics — self-improving loop active\n');
     } catch {
@@ -167,3 +168,4 @@ if (mode === 'test') {
 }
 
 module.exports = MarketingOrchestrator;
+

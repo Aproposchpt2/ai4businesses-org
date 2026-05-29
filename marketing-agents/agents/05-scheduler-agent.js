@@ -21,7 +21,13 @@ class SchedulerAgent {
     try {
       // 1. Load social posts and design assets
       const { posts } = await this.loadSocialPosts();
-      const { assets } = await this.loadDesignAssets();
+            let assets = {};
+      try {
+        const assetData = await this.loadDesignAssets();
+        assets = assetData.assets || {};
+      } catch(e) {
+        console.log('No design assets - text only mode');
+      }
 
       // 2. Schedule posts for Thursday–Saturday
       const scheduledPosts = await this.scheduleAllPosts(posts, assets);
@@ -155,20 +161,20 @@ class SchedulerAgent {
   // ── LOAD DATA ─────────────────────────────────────────────────
   async loadSocialPosts() {
     const fs = require('fs').promises;
-    const data = await fs.readFile('/tmp/social-posts.json', 'utf8');
+    const data = await fs.readFile('C:/temp/social-posts.json', 'utf8');
     return JSON.parse(data);
   }
 
   async loadDesignAssets() {
     const fs = require('fs').promises;
-    const data = await fs.readFile('/tmp/design-assets.json', 'utf8');
+    const data = await fs.readFile('C:/temp/design-assets.json', 'utf8');
     return JSON.parse(data);
   }
 
   // ── SAVE RESULTS ──────────────────────────────────────────────
   async saveSchedulingResults(scheduledPosts) {
     const fs = require('fs').promises;
-    await fs.writeFile('/tmp/scheduling-results.json', JSON.stringify({
+    await fs.writeFile('C:/temp/scheduling-results.json', JSON.stringify({
       scheduledPosts,
       scheduledAt: new Date().toISOString(),
       totalScheduled: scheduledPosts.filter(p => p.success).length,
@@ -178,3 +184,4 @@ class SchedulerAgent {
 }
 
 module.exports = SchedulerAgent;
+

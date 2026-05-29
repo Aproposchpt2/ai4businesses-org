@@ -1,3 +1,4 @@
+require('dotenv').config();
 // ═══════════════════════════════════════════════════════════════
 // OAUTH SETUP — ONE-TIME AUTHORIZATION
 // Run this once to authorize Google APIs

@@ -79,7 +79,7 @@ module.exports = {
 
   // ── ANTHROPIC (CLAUDE AI) ───────────────────────────────────
   anthropic: {
-    model: 'claude-sonnet-4-20250514',
+    model: 'claude-sonnet-4-5',
     maxTokens: 4000
   },
 

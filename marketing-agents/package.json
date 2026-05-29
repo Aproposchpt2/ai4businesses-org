@@ -13,7 +13,7 @@
     "sunday": "node -e \"const O = require('./orchestrator'); new O().runSunday()\""
   },
   "dependencies": {
-    "dotenv": "^16.0.0",
+    "dotenv": "^16.6.1",
     "node-cron": "^3.0.0"
   },
   "engines": {

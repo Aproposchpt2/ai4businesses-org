@@ -161,20 +161,20 @@ class DesignAgent {
   // ── LOAD DATA ─────────────────────────────────────────────────
   async loadSocialPosts() {
     const fs = require('fs').promises;
-    const data = await fs.readFile('/tmp/social-posts.json', 'utf8');
+    const data = await fs.readFile('C:/temp/social-posts.json', 'utf8');
     return JSON.parse(data);
   }
 
   async loadWeeklyAssignment() {
     const fs = require('fs').promises;
-    const data = await fs.readFile('/tmp/weekly-assignment.json', 'utf8');
+    const data = await fs.readFile('C:/temp/weekly-assignment.json', 'utf8');
     return JSON.parse(data);
   }
 
   // ── SAVE ASSETS ───────────────────────────────────────────────
   async saveAssets(assets) {
     const fs = require('fs').promises;
-    await fs.writeFile('/tmp/design-assets.json', JSON.stringify({
+    await fs.writeFile('C:/temp/design-assets.json', JSON.stringify({
       assets,
       createdAt: new Date().toISOString(),
       status: 'ready_for_scheduler'

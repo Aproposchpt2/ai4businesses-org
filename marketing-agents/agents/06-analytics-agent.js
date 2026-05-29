@@ -65,7 +65,7 @@ class AnalyticsAgent {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${tokens.access_token}`,
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json', 'x-api-key': process.env.ANTHROPIC_API_KEY, 'anthropic-version': '2023-06-01'
         },
         body: JSON.stringify({
           startDate,
@@ -94,7 +94,7 @@ class AnalyticsAgent {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${tokens.access_token}`,
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json', 'x-api-key': process.env.ANTHROPIC_API_KEY, 'anthropic-version': '2023-06-01'
         },
         body: JSON.stringify({
           dateRanges: [
@@ -118,7 +118,7 @@ class AnalyticsAgent {
     );
 
     const data = await response.json();
-    return data.rows || [];
+    return (data && data.rows) ? data.rows : [];
   }
 
   // ── FETCH BUFFER ANALYTICS ────────────────────────────────────
@@ -195,7 +195,7 @@ Respond ONLY with JSON:
 
     const response = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', 'x-api-key': process.env.ANTHROPIC_API_KEY, 'anthropic-version': '2023-06-01' },
       body: JSON.stringify({
         model: config.anthropic.model,
         max_tokens: 1500,
@@ -216,7 +216,7 @@ Respond ONLY with JSON:
   // ── SAVE FOR COMMANDER ────────────────────────────────────────
   async saveReportForCommander(report) {
     const fs = require('fs').promises;
-    await fs.writeFile('/tmp/analytics-report.json',
+    await fs.writeFile('C:/temp/analytics-report.json',
       JSON.stringify(report, null, 2)
     );
   }
@@ -307,7 +307,7 @@ Respond ONLY with JSON:
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${config.resend.apiKey}`,
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json', 'x-api-key': process.env.ANTHROPIC_API_KEY, 'anthropic-version': '2023-06-01'
       },
       body: JSON.stringify({
         from: config.resend.fromEmail,

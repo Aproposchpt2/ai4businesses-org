@@ -47,7 +47,7 @@ class SEOWriterAgent {
   // ── LOAD WEEKLY ASSIGNMENT ────────────────────────────────────
   async loadWeeklyAssignment() {
     const fs = require('fs').promises;
-    const data = await fs.readFile('/tmp/weekly-assignment.json', 'utf8');
+    const data = await fs.readFile('C:/temp/weekly-assignment.json', 'utf8');
     return JSON.parse(data);
   }
 
@@ -92,7 +92,7 @@ Respond ONLY with JSON:
 
     const response = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', 'x-api-key': process.env.ANTHROPIC_API_KEY, 'anthropic-version': '2023-06-01' },
       body: JSON.stringify({
         model: config.anthropic.model,
         max_tokens: config.anthropic.maxTokens,
@@ -232,7 +232,7 @@ Respond ONLY with JSON:
         method: 'PUT',
         headers: {
           'Authorization': `token ${config.github.token}`,
-          'Content-Type': 'application/json',
+          'Content-Type': 'application/json', 'x-api-key': process.env.ANTHROPIC_API_KEY, 'anthropic-version': '2023-06-01',
           'Accept': 'application/vnd.github.v3+json'
         },
         body: JSON.stringify(payload)
@@ -300,7 +300,7 @@ Respond ONLY with JSON:
         method: 'PUT',
         headers: {
           'Authorization': `token ${config.github.token}`,
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json', 'x-api-key': process.env.ANTHROPIC_API_KEY, 'anthropic-version': '2023-06-01'
         },
         body: JSON.stringify({
           message: `📚 Update blog index: ${article.title}`,
@@ -314,7 +314,7 @@ Respond ONLY with JSON:
   // ── SAVE FOR SOCIAL AGENT ─────────────────────────────────────
   async saveArticleForSocialAgent(article, assignment, publishResult) {
     const fs = require('fs').promises;
-    await fs.writeFile('/tmp/published-article.json', JSON.stringify({
+    await fs.writeFile('C:/temp/published-article.json', JSON.stringify({
       article,
       assignment,
       publishResult,

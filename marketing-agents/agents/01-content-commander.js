@@ -64,7 +64,7 @@ class ContentCommanderAgent {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${tokens.access_token}`,
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json', 'x-api-key': process.env.ANTHROPIC_API_KEY, 'anthropic-version': '2023-06-01'
         },
         body: JSON.stringify({
           startDate,
@@ -77,7 +77,7 @@ class ContentCommanderAgent {
     );
 
     const data = await response.json();
-    return data.rows || [];
+    return (data && data.rows) ? data.rows : [];
   }
 
   // ── FETCH GA4 DATA ───────────────────────────────────────────
@@ -90,7 +90,7 @@ class ContentCommanderAgent {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${tokens.access_token}`,
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json', 'x-api-key': process.env.ANTHROPIC_API_KEY, 'anthropic-version': '2023-06-01'
         },
         body: JSON.stringify({
           dateRanges: [{ startDate: '28daysAgo', endDate: 'today' }],
@@ -107,7 +107,7 @@ class ContentCommanderAgent {
     );
 
     const data = await response.json();
-    return data.rows || [];
+    return (data && data.rows) ? data.rows : [];
   }
 
   // ── ANALYZE PREVIOUS PERFORMANCE ─────────────────────────────
@@ -157,7 +157,7 @@ Respond ONLY with a JSON object:
 
     const response = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', 'x-api-key': process.env.ANTHROPIC_API_KEY, 'anthropic-version': '2023-06-01' },
       body: JSON.stringify({
         model: config.anthropic.model,
         max_tokens: 1000,
@@ -166,7 +166,7 @@ Respond ONLY with a JSON object:
     });
 
     const data = await response.json();
-    const text = data.content[0].text;
+    if(!data.content || !data.content[0]){console.error("Claude API error:", JSON.stringify(data)); throw new Error("Claude API returned no content: "+JSON.stringify(data));} const text = data.content[0].text;
 
     try {
       const clean = text.replace(/```json|```/g, '').trim();
@@ -198,7 +198,7 @@ Respond ONLY with a JSON object:
     };
 
     await fs.writeFile(
-      '/tmp/weekly-assignment.json',
+      'C:/temp/weekly-assignment.json',
       JSON.stringify(assignmentData, null, 2)
     );
 

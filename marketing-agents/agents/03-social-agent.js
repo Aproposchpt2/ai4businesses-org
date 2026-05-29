@@ -42,7 +42,7 @@ class SocialAgent {
   // ── LOAD PUBLISHED ARTICLE ────────────────────────────────────
   async loadPublishedArticle() {
     const fs = require('fs').promises;
-    const data = await fs.readFile('/tmp/published-article.json', 'utf8');
+    const data = await fs.readFile('C:/temp/published-article.json', 'utf8');
     return JSON.parse(data);
   }
 
@@ -96,7 +96,7 @@ Respond ONLY with JSON:
 
     const response = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', 'x-api-key': process.env.ANTHROPIC_API_KEY, 'anthropic-version': '2023-06-01' },
       body: JSON.stringify({
         model: config.anthropic.model,
         max_tokens: config.anthropic.maxTokens,
@@ -126,7 +126,7 @@ Respond ONLY with JSON:
   // ── SAVE POSTS FOR DESIGN + SCHEDULER ────────────────────────
   async saveSocialPosts(socialPosts) {
     const fs = require('fs').promises;
-    await fs.writeFile('/tmp/social-posts.json', JSON.stringify({
+    await fs.writeFile('C:/temp/social-posts.json', JSON.stringify({
       posts: socialPosts,
       createdAt: new Date().toISOString(),
       status: 'ready_for_design'
