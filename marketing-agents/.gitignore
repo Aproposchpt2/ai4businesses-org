@@ -1,0 +1,6 @@
+﻿marketing-agents/.env
+marketing-agents/google-tokens.json
+marketing-agents/node_modules/
+marketing-agents/fix-scheduler.js
+marketing-agents/push-verify.js
+marketing-agents/package-lock.json
