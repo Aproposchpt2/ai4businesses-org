@@ -3,7 +3,7 @@ require('dotenv').config();
 class SchedulerAgent {
   constructor() {
     // Buffer — LinkedIn only (ai4businesses.org)
-    this.bufferToken   = process.env.BUFFER_ACCESS_TOKEN;
+    this.bufferKey     = process.env.BUFFER_ACCESS_TOKEN;
     this.bufferApi     = 'https://api.bufferapp.com/1';
     this.linkedinId    = process.env.BUFFER_LINKEDIN_ID;
 
@@ -16,16 +16,17 @@ class SchedulerAgent {
   // ── BUFFER — LinkedIn scheduling ────────────────────
 
   async scheduleBufferPost(profileId, text, scheduledAt) {
-    const body = new URLSearchParams({
-      access_token: this.bufferToken,
-      profile_ids:  profileId,
-      text,
-      scheduled_at: scheduledAt
-    });
-
     const res = await fetch(`${this.bufferApi}/updates/create.json`, {
       method: 'POST',
-      body
+      headers: {
+        'Authorization': `Bearer ${this.bufferKey}`,
+        'Content-Type':  'application/x-www-form-urlencoded'
+      },
+      body: new URLSearchParams({
+        profile_ids:  profileId,
+        text,
+        scheduled_at: scheduledAt
+      })
     });
 
     if (!res.ok) {
