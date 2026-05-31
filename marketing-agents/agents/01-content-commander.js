@@ -67,9 +67,14 @@ Return as JSON array only. No preamble. No markdown.`
     });
 
     try {
-      return JSON.parse(response.content[0].text);
+      const clean = response.content[0].text.replace(/```json|```/g, '').trim();
+      return JSON.parse(clean);
     } catch {
-      return response.content[0].text.split('\n').filter(k => k.trim());
+      return response.content[0].text
+        .replace(/```json|```/g, '')
+        .split('\n')
+        .map(k => k.replace(/^[\s",-]+|[\s",-]+$/g, ''))
+        .filter(k => k.length > 3);
     }
   }
 
