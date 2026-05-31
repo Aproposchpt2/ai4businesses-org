@@ -1,136 +1,184 @@
-// ═══════════════════════════════════════════════════════════════
-// AGENT 3 — SOCIAL AGENT
-// Role: Repurpose article into platform-specific social posts
-// Runs: Every Wednesday at 7:00 AM PST
-// Platforms: LinkedIn, Facebook, Instagram, TikTok
-// ═══════════════════════════════════════════════════════════════
-
-const config = require('../config/config');
-const { logAgentActivity } = require('../utils/logger');
+require('dotenv').config();
+const Anthropic = require('@anthropic-ai/sdk');
 
 class SocialAgent {
   constructor() {
-    this.name = 'Social Agent';
-    this.role = 'social_content_creation';
+    this.client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
   }
 
-  // ── MAIN ENTRY POINT ─────────────────────────────────────────
-  async run() {
-    console.log(`[${this.name}] Starting Wednesday social content creation...`);
-    await logAgentActivity(this.name, 'started', 'Social content creation initiated');
+  // ── CAMPAIGN 1 — LinkedIn only ──────────────────────
 
-    try {
-      // 1. Load published article data
-      const { article, assignment, publishResult } = await this.loadPublishedArticle();
+  async createLinkedInPost(articleUrl, topic) {
+    console.log('[Social C1] Creating LinkedIn post...');
+    const response = await this.client.messages.create({
+      model: 'claude-sonnet-4-5',
+      max_tokens: 1000,
+      messages: [{
+        role: 'user',
+        content: `Write a LinkedIn post for a B2B audience.
+Topic: ${topic}
+Article URL: ${articleUrl}
 
-      // 2. Generate all platform posts via Claude
-      const socialPosts = await this.generateAllPosts(article, assignment, publishResult);
+Requirements:
+- Hook in first line — no "I" opener
+- 150-200 words
+- Promote Fast Track Bundle $349/month
+- Tagline: "Never miss a lead from day one"
+- End with article link
+- 3-5 relevant hashtags
+- Professional but energetic tone
 
-      // 3. Save posts for Design Agent and Scheduler
-      await this.saveSocialPosts(socialPosts);
-
-      await logAgentActivity(this.name, 'completed', `Generated ${Object.keys(socialPosts).length} platform posts`);
-      console.log(`[${this.name}] Social posts ready for all platforms`);
-
-      return socialPosts;
-    } catch (error) {
-      await logAgentActivity(this.name, 'error', error.message);
-      throw error;
-    }
-  }
-
-  // ── LOAD PUBLISHED ARTICLE ────────────────────────────────────
-  async loadPublishedArticle() {
-    const fs = require('fs').promises;
-    const data = await fs.readFile('C:/temp/published-article.json', 'utf8');
-    return JSON.parse(data);
-  }
-
-  // ── GENERATE ALL PLATFORM POSTS ───────────────────────────────
-  async generateAllPosts(article, assignment, publishResult) {
-    const prompt = `You are the Social Media Agent for AI4 Businesses.
-
-PUBLISHED ARTICLE:
-Title: "${article.title}"
-URL: "${publishResult.url}"
-Tags: ${article.tags.join(', ')}
-Social Hook: "${assignment.socialHook}"
-Target Product: "${assignment.targetProduct}"
-
-Create platform-specific social media posts for this article.
-Each post must feel native to its platform. Include the article URL.
-
-Rules:
-- LinkedIn: Professional, insight-driven, 150-200 words, 3-5 hashtags
-- Facebook: Conversational, story-driven, 100-150 words, 2-3 hashtags  
-- Instagram: Visual-focused, punchy, 80-100 words, 10-15 hashtags
-- TikTok: Script for video caption, energetic, 50-80 words, 5-8 hashtags
-
-Respond ONLY with JSON:
-{
-  "linkedin": {
-    "text": "full post text",
-    "hashtags": ["#hashtag1"],
-    "imagePrompt": "description for Canva design agent",
-    "postType": "article_share"
-  },
-  "facebook": {
-    "text": "full post text",
-    "hashtags": ["#hashtag1"],
-    "imagePrompt": "description for Canva design agent",
-    "postType": "engagement"
-  },
-  "instagram": {
-    "text": "full post text",
-    "hashtags": ["#hashtag1"],
-    "imagePrompt": "description for Canva design agent",
-    "postType": "carousel_teaser"
-  },
-  "tiktok": {
-    "text": "full caption",
-    "hashtags": ["#hashtag1"],
-    "imagePrompt": "description for Canva design agent",
-    "postType": "video_hook"
-  }
-}`;
-
-    const response = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'x-api-key': process.env.ANTHROPIC_API_KEY, 'anthropic-version': '2023-06-01' },
-      body: JSON.stringify({
-        model: config.anthropic.model,
-        max_tokens: config.anthropic.maxTokens,
-        messages: [{ role: 'user', content: prompt }]
-      })
+Return post only. No preamble.`
+      }]
     });
-
-    const data = await response.json();
-    const text = data.content[0].text;
-    const clean = text.replace(/```json|```/g, '').trim();
-    const posts = JSON.parse(clean);
-
-    // Add metadata to each post
-    const articleUrl = publishResult.url;
-    for (const platform of Object.keys(posts)) {
-      posts[platform].articleUrl = articleUrl;
-      posts[platform].platform = platform;
-      posts[platform].createdAt = new Date().toISOString();
-      posts[platform].status = 'ready';
-      // Combine text and hashtags
-      posts[platform].fullText = `${posts[platform].text}\n\n${posts[platform].hashtags.join(' ')}\n\n${articleUrl}`;
-    }
-
-    return posts;
+    return response.content[0].text.trim();
   }
 
-  // ── SAVE POSTS FOR DESIGN + SCHEDULER ────────────────────────
-  async saveSocialPosts(socialPosts) {
-    const fs = require('fs').promises;
-    await fs.writeFile('C:/temp/social-posts.json', JSON.stringify({
-      posts: socialPosts,
-      createdAt: new Date().toISOString(),
-      status: 'ready_for_design'
-    }, null, 2));
+  async createLinkedInTeaser(topic) {
+    console.log('[Social C1] Creating LinkedIn Sunday teaser...');
+    const response = await this.client.messages.create({
+      model: 'claude-sonnet-4-5',
+      max_tokens: 500,
+      messages: [{
+        role: 'user',
+        content: `Write a Sunday LinkedIn teaser post for AI business automation.
+Topic angle: ${topic}
+
+Requirements:
+- 80-120 words
+- Drive curiosity about Monday's article
+- Reference Fast Track Bundle $349/month
+- Link to: https://ai4businesses.org
+- 3 hashtags max
+
+Return post only. No preamble.`
+      }]
+    });
+    return response.content[0].text.trim();
+  }
+
+  // ── CAMPAIGN 2 — TikTok + Instagram + Facebook ──────
+
+  async createTikTokScript(angle) {
+    console.log('[Social C2] Creating TikTok script...');
+    const response = await this.client.messages.create({
+      model: 'claude-sonnet-4-5',
+      max_tokens: 800,
+      messages: [{
+        role: 'user',
+        content: `Write a TikTok video script for AI4 Website Design Studio.
+Angle: ${angle}
+
+Requirements:
+- 45-60 seconds when spoken aloud
+- Hook in first 3 seconds — stop the scroll
+- Highlight live template + color switching
+- "See your site LIVE before you approve it"
+- No competitor offers this — emphasize it
+- CTA: Visit ai4websitedesign.com
+- Format with labels: [HOOK] [DEMO] [CTA]
+
+Return script only. No preamble.`
+      }]
+    });
+    return response.content[0].text.trim();
+  }
+
+  async createInstagramCaption(angle) {
+    console.log('[Social C2] Creating Instagram caption EN...');
+    const response = await this.client.messages.create({
+      model: 'claude-sonnet-4-5',
+      max_tokens: 600,
+      messages: [{
+        role: 'user',
+        content: `Write an Instagram caption for AI4 Website Design Studio.
+Angle: ${angle}
+
+Requirements:
+- 100-150 words
+- Strong visual hook opening line
+- Highlight: "See your site LIVE before you approve it"
+- Live template + color switching — unrivaled, no competitor offers this
+- CTA: Link in bio → ai4websitedesign.com
+- 10-15 hashtags at end
+
+Return caption only. No preamble.`
+      }]
+    });
+    return response.content[0].text.trim();
+  }
+
+  async createInstagramCaptionSpanish(angle) {
+    console.log('[Social C2] Creating Instagram caption ES...');
+    const response = await this.client.messages.create({
+      model: 'claude-sonnet-4-5',
+      max_tokens: 600,
+      messages: [{
+        role: 'user',
+        content: `Escribe un caption de Instagram en español para AI4 Website Design Studio.
+Ángulo: ${angle}
+
+Requisitos:
+- 100-150 palabras
+- Destaca: "Ve tu sitio EN VIVO antes de aprobarlo"
+- Cambio de plantillas y colores en tiempo real — ningún competidor ofrece esto
+- Link: espanola.ai4websitedesign.com
+- 10-15 hashtags en español al final
+
+Devuelve solo el caption. Sin preámbulo.`
+      }]
+    });
+    return response.content[0].text.trim();
+  }
+
+  async createFacebookPost(angle) {
+    console.log('[Social C2] Creating Facebook post EN...');
+    const response = await this.client.messages.create({
+      model: 'claude-sonnet-4-5',
+      max_tokens: 700,
+      messages: [{
+        role: 'user',
+        content: `Write a Facebook community post for small business owners.
+Angle: ${angle}
+
+Requirements:
+- 150-200 words
+- Community-friendly, helpful tone
+- Include a question to drive engagement
+- Highlight: "See your site LIVE before you approve it"
+- Live template + color switching — no competitor offers this
+- CTA: ai4websitedesign.com
+- 3-5 hashtags
+
+Return post only. No preamble.`
+      }]
+    });
+    return response.content[0].text.trim();
+  }
+
+  async createFacebookPostSpanish(angle) {
+    console.log('[Social C2] Creating Facebook post ES...');
+    const response = await this.client.messages.create({
+      model: 'claude-sonnet-4-5',
+      max_tokens: 700,
+      messages: [{
+        role: 'user',
+        content: `Escribe un post de Facebook para pequeños empresarios en español.
+Ángulo: ${angle}
+
+Requisitos:
+- 150-200 palabras
+- Tono de comunidad, útil y accesible
+- Incluye una pregunta para generar engagement
+- Destaca: "Ve tu sitio EN VIVO antes de aprobarlo"
+- Cambio de plantillas y colores — ningún competidor ofrece esto
+- Link: espanola.ai4websitedesign.com
+- 3-5 hashtags en español
+
+Devuelve solo el post. Sin preámbulo.`
+      }]
+    });
+    return response.content[0].text.trim();
   }
 }
 
