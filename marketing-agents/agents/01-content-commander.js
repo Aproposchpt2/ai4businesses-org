@@ -1,208 +1,72 @@
-// ═══════════════════════════════════════════════════════════════
-// AGENT 1 — CONTENT COMMANDER
-// Role: Keyword research, topic assignment, weekly strategy
-// Runs: Every Monday at 6:00 AM PST
-// ═══════════════════════════════════════════════════════════════
-
-const config = require('../config/config');
-const { getGoogleTokens } = require('../utils/auth');
-const { logAgentActivity } = require('../utils/logger');
+require('dotenv').config();
+const Anthropic = require('@anthropic-ai/sdk');
 
 class ContentCommanderAgent {
   constructor() {
-    this.name = 'Content Commander';
-    this.role = 'keyword_research_and_strategy';
+    this.client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
   }
 
-  // ── MAIN ENTRY POINT ─────────────────────────────────────────
-  async run(analyticsReport = null) {
-    console.log(`[${this.name}] Starting Monday keyword research...`);
-    await logAgentActivity(this.name, 'started', 'Weekly keyword research initiated');
+  async runMondayStrategy() {
+    console.log('[Content Commander] Monday strategy starting...');
 
-    try {
-      // 1. Pull keyword data from Search Console
-      const keywordData = await this.fetchSearchConsoleData();
+    const keywords = await this.generateKeywords();
+    const articleTopic = await this.selectArticleTopic(keywords);
 
-      // 2. Pull traffic data from GA4
-      const trafficData = await this.fetchGA4Data();
-
-      // 3. Factor in last week's analytics if available
-      const performanceInsights = analyticsReport
-        ? this.analyzePerformance(analyticsReport)
-        : null;
-
-      // 4. Use Claude to determine best keyword and topic
-      const weeklyAssignment = await this.generateWeeklyAssignment(
-        keywordData,
-        trafficData,
-        performanceInsights
-      );
-
-      // 5. Save assignment for SEO Writer
-      await this.saveWeeklyAssignment(weeklyAssignment);
-
-      await logAgentActivity(this.name, 'completed', `Topic assigned: ${weeklyAssignment.articleTitle}`);
-      console.log(`[${this.name}] Weekly assignment ready: "${weeklyAssignment.articleTitle}"`);
-
-      return weeklyAssignment;
-    } catch (error) {
-      await logAgentActivity(this.name, 'error', error.message);
-      throw error;
-    }
-  }
-
-  // ── FETCH SEARCH CONSOLE DATA ────────────────────────────────
-  async fetchSearchConsoleData() {
-    const tokens = await getGoogleTokens();
-    const endDate = new Date().toISOString().split('T')[0];
-    const startDate = new Date(Date.now() - 28 * 24 * 60 * 60 * 1000)
-      .toISOString().split('T')[0];
-
-    const response = await fetch(
-      `${config.searchConsole.apiEndpoint}/sites/${encodeURIComponent(config.searchConsole.siteUrl)}/searchAnalytics/query`,
-      {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${tokens.access_token}`,
-          'Content-Type': 'application/json', 'x-api-key': process.env.ANTHROPIC_API_KEY, 'anthropic-version': '2023-06-01'
-        },
-        body: JSON.stringify({
-          startDate,
-          endDate,
-          dimensions: ['query'],
-          rowLimit: 50,
-          orderBy: [{ fieldName: 'impressions', sortOrder: 'DESCENDING' }]
-        })
+    const output = {
+      timestamp: new Date().toISOString(),
+      campaign1: {
+        keywords,
+        articleTopic
       }
-    );
-
-    const data = await response.json();
-    return (data && data.rows) ? data.rows : [];
-  }
-
-  // ── FETCH GA4 DATA ───────────────────────────────────────────
-  async fetchGA4Data() {
-    const tokens = await getGoogleTokens();
-
-    const response = await fetch(
-      `${config.ga4.apiEndpoint}/properties/${config.ga4.propertyId}:runReport`,
-      {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${tokens.access_token}`,
-          'Content-Type': 'application/json', 'x-api-key': process.env.ANTHROPIC_API_KEY, 'anthropic-version': '2023-06-01'
-        },
-        body: JSON.stringify({
-          dateRanges: [{ startDate: '28daysAgo', endDate: 'today' }],
-          dimensions: [{ name: 'pagePath' }],
-          metrics: [
-            { name: 'sessions' },
-            { name: 'bounceRate' },
-            { name: 'averageSessionDuration' }
-          ],
-          orderBys: [{ metric: { metricName: 'sessions' }, desc: true }],
-          limit: 20
-        })
-      }
-    );
-
-    const data = await response.json();
-    return (data && data.rows) ? data.rows : [];
-  }
-
-  // ── ANALYZE PREVIOUS PERFORMANCE ─────────────────────────────
-  analyzePerformance(analyticsReport) {
-    return {
-      topPerformingKeywords: analyticsReport.topKeywords || [],
-      topPerformingPlatform: analyticsReport.topPlatform || 'linkedin',
-      contentAngleWorking: analyticsReport.bestContentAngle || null,
-      avoidTopics: analyticsReport.lowPerformers || []
     };
+
+    console.log('[Content Commander] Strategy complete:', JSON.stringify(output, null, 2));
+    return output;
   }
 
-  // ── GENERATE WEEKLY ASSIGNMENT VIA CLAUDE ────────────────────
-  async generateWeeklyAssignment(keywordData, trafficData, performanceInsights) {
-    const prompt = `You are the Content Commander for AI4 Businesses, a SaaS company selling:
-- Smart Auto-Attendant
-- Lead Manager / CRM
-- AI Voice Attendant  
-- Business Intake System
-
-Target audience: Small and medium business owners who want to automate operations.
-
-SEARCH CONSOLE DATA (last 28 days):
-${JSON.stringify(keywordData.slice(0, 20), null, 2)}
-
-GA4 TRAFFIC DATA (top pages):
-${JSON.stringify(trafficData.slice(0, 10), null, 2)}
-
-${performanceInsights ? `PERFORMANCE INSIGHTS FROM LAST WEEK:
-${JSON.stringify(performanceInsights, null, 2)}` : ''}
-
-Based on this data, determine the BEST keyword opportunity for this week.
-Choose a keyword with high impressions but room for content improvement.
-
-Respond ONLY with a JSON object:
-{
-  "targetKeyword": "the exact keyword phrase",
-  "articleTitle": "SEO-optimized article title using the keyword",
-  "articleAngle": "the specific angle/hook for the article",
-  "targetProduct": "which FlowDesk Pro product this supports",
-  "estimatedSearchVolume": "low/medium/high",
-  "contentBrief": "3-4 sentences describing what the article should cover",
-  "callToAction": "the CTA to use at end of article",
-  "socialHook": "one punchy sentence for social media posts",
-  "platforms": ["linkedin", "facebook", "instagram", "tiktok"]
-}`;
-
-    const response = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'x-api-key': process.env.ANTHROPIC_API_KEY, 'anthropic-version': '2023-06-01' },
-      body: JSON.stringify({
-        model: config.anthropic.model,
-        max_tokens: 1000,
-        messages: [{ role: 'user', content: prompt }]
-      })
+  async generateKeywords() {
+    const response = await this.client.messages.create({
+      model: 'claude-sonnet-4-20250514',
+      max_tokens: 500,
+      messages: [{
+        role: 'user',
+        content: `Generate 10 high-intent SEO keywords for:
+AI business automation, AI contact center, CRM, small business efficiency.
+Return as JSON array only. No preamble. No markdown.`
+      }]
     });
 
-    const data = await response.json();
-    if(!data.content || !data.content[0]){console.error("Claude API error:", JSON.stringify(data)); throw new Error("Claude API returned no content: "+JSON.stringify(data));} const text = data.content[0].text;
-
     try {
-      const clean = text.replace(/```json|```/g, '').trim();
-      return JSON.parse(clean);
+      return JSON.parse(response.content[0].text);
     } catch {
-      // Fallback assignment if parsing fails
-      return {
-        targetKeyword: 'AI business automation',
-        articleTitle: 'How AI Business Automation Saves Small Businesses 10+ Hours Per Week',
-        articleAngle: 'ROI and time savings for small business owners',
-        targetProduct: 'Smart Auto-Attendant',
-        estimatedSearchVolume: 'medium',
-        contentBrief: 'Cover the real cost of manual processes, how AI automation works, ROI calculator, and how FlowDesk Pro solves this.',
-        callToAction: 'Start your free trial at ai4businesses.org',
-        socialHook: 'Your competitors are already using AI. Are you?',
-        platforms: ['linkedin', 'facebook', 'instagram', 'tiktok']
-      };
+      return response.content[0].text.split('\n').filter(k => k.trim());
     }
   }
 
-  // ── SAVE ASSIGNMENT FOR OTHER AGENTS ─────────────────────────
-  async saveWeeklyAssignment(assignment) {
-    const fs = require('fs').promises;
-    const assignmentData = {
-      ...assignment,
-      createdAt: new Date().toISOString(),
-      weekOf: new Date().toISOString().split('T')[0],
-      status: 'assigned'
-    };
+  async selectArticleTopic(keywords) {
+    const topics = [
+      'Why Small Businesses Using AI Automation See 40% Lower Operating Costs',
+      'How AI Contact Centers Are Replacing Traditional Receptionists in 2026',
+      'The ROI of Business Automation: What the Numbers Actually Show',
+      'How to Launch a Business in 24 Hours Using AI Automation',
+      'What Is a White Label AI System and How Can Agencies Profit From It'
+    ];
 
-    await fs.writeFile(
-      'C:/temp/weekly-assignment.json',
-      JSON.stringify(assignmentData, null, 2)
-    );
+    const response = await this.client.messages.create({
+      model: 'claude-sonnet-4-20250514',
+      max_tokens: 300,
+      messages: [{
+        role: 'user',
+        content: `Given these keywords: ${keywords.join(', ')}
 
-    return assignmentData;
+Select the best article topic from this list:
+${topics.map((t, i) => `${i + 1}. ${t}`).join('\n')}
+
+Return only the topic text. No explanation. No numbering.`
+      }]
+    });
+
+    return response.content[0].text.trim();
   }
 }
 
