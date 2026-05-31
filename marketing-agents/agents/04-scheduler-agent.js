@@ -2,20 +2,28 @@ require('dotenv').config();
 
 class SchedulerAgent {
   constructor() {
-    this.token    = process.env.BUFFER_ACCESS_TOKEN;
-    this.api      = 'https://api.bufferapp.com/1';
-    this.linkedin = process.env.BUFFER_LINKEDIN_ID;
+    // Buffer — LinkedIn only (ai4businesses.org)
+    this.bufferToken   = process.env.BUFFER_ACCESS_TOKEN;
+    this.bufferApi     = 'https://api.bufferapp.com/1';
+    this.linkedinId    = process.env.BUFFER_LINKEDIN_ID;
+
+    // Zernio — TikTok + Instagram (ai4websitedesign.com)
+    this.zernioKey         = process.env.ZERNIO_API_KEY;
+    this.zernioInstagramId = process.env.ZERNIO_INSTAGRAM_PROFILE_ID;
+    this.zernioTikTokId    = process.env.ZERNIO_TIKTOK_PROFILE_ID;
   }
 
-  async schedulePost(profileId, text, scheduledAt) {
+  // ── BUFFER — LinkedIn scheduling ────────────────────
+
+  async scheduleBufferPost(profileId, text, scheduledAt) {
     const body = new URLSearchParams({
-      access_token: this.token,
+      access_token: this.bufferToken,
       profile_ids:  profileId,
       text,
       scheduled_at: scheduledAt
     });
 
-    const res = await fetch(`${this.api}/updates/create.json`, {
+    const res = await fetch(`${this.bufferApi}/updates/create.json`, {
       method: 'POST',
       body
     });
@@ -26,7 +34,7 @@ class SchedulerAgent {
     }
 
     const data = await res.json();
-    console.log(`[Scheduler] ✅ Scheduled to ${profileId}:`, data.id);
+    console.log(`[Scheduler] ✅ Buffer scheduled to ${profileId}:`, data.id);
     return data;
   }
 
@@ -39,15 +47,61 @@ class SchedulerAgent {
     return result.toISOString();
   }
 
-  // Campaign 1 — LinkedIn only
+  // Campaign 1 — LinkedIn via Buffer
   async scheduleLinkedInArticle(post) {
     const monday8am = this.getNextWeekday(1, 8, 0);
-    return this.schedulePost(this.linkedin, post, monday8am);
+    return this.scheduleBufferPost(this.linkedinId, post, monday8am);
   }
 
   async scheduleLinkedInTeaser(post) {
     const sunday5pm = this.getNextWeekday(0, 17, 0);
-    return this.schedulePost(this.linkedin, post, sunday5pm);
+    return this.scheduleBufferPost(this.linkedinId, post, sunday5pm);
+  }
+
+  // ── ZERNIO — TikTok + Instagram (ai4websitedesign.com) ──
+
+  async scheduleZernioPost(profileId, content, scheduledAt) {
+    // TODO: confirm Zernio API endpoint with owner
+    const res = await fetch('https://api.zernio.com/v1/posts', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${this.zernioKey}`,
+        'Content-Type':  'application/json'
+      },
+      body: JSON.stringify({
+        profile_id:   profileId,
+        content,
+        scheduled_at: scheduledAt
+      })
+    });
+
+    if (!res.ok) {
+      const err = await res.text();
+      throw new Error(`Zernio API error: ${err}`);
+    }
+
+    const data = await res.json();
+    console.log(`[Scheduler] ✅ Zernio scheduled to ${profileId}:`, data.id || data);
+    return data;
+  }
+
+  // Campaign 2 — Instagram via Zernio (ai4websitedesign.com)
+  async scheduleInstagram(caption) {
+    const wednesday12pm = this.getNextWeekday(3, 12, 0);
+    return this.scheduleZernioPost(this.zernioInstagramId, caption, wednesday12pm);
+  }
+
+  // Campaign 2 — TikTok via Zernio (ai4websitedesign.com)
+  async scheduleTikTok(script) {
+    const thursday6pm = this.getNextWeekday(4, 18, 0);
+    return this.scheduleZernioPost(this.zernioTikTokId, script, thursday6pm);
+  }
+
+  // Campaign 2 — Facebook (manual — log only)
+  async scheduleFacebook(post) {
+    console.log('[Scheduler] Facebook post ready for manual posting to ai4businesses.org:');
+    console.log(post);
+    return { status: 'manual', platform: 'facebook' };
   }
 }
 
