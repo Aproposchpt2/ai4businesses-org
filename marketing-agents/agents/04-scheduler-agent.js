@@ -60,18 +60,17 @@ class SchedulerAgent {
 
   // ── ZERNIO — TikTok + Instagram (ai4websitedesign.com) ──
 
-  async scheduleZernioPost(profileId, content, scheduledAt) {
-    // TODO: confirm Zernio API endpoint with owner
-    const res = await fetch('https://api.zernio.com/v1/posts', {
+  async scheduleZernioPost(platforms, content, scheduledAt) {
+    const res = await fetch('https://zernio.com/api/v1/posts', {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${this.zernioKey}`,
         'Content-Type':  'application/json'
       },
       body: JSON.stringify({
-        profile_id:   profileId,
         content,
-        scheduled_at: scheduledAt
+        scheduledFor: scheduledAt,
+        platforms
       })
     });
 
@@ -81,20 +80,24 @@ class SchedulerAgent {
     }
 
     const data = await res.json();
-    console.log(`[Scheduler] ✅ Zernio scheduled to ${profileId}:`, data.id || data);
+    console.log(`[Scheduler] ✅ Zernio scheduled (${platforms.map(p => p.platform).join('+')})`, data.id || '');
     return data;
   }
 
   // Campaign 2 — Instagram via Zernio (ai4websitedesign.com)
   async scheduleInstagram(caption) {
     const wednesday12pm = this.getNextWeekday(3, 12, 0);
-    return this.scheduleZernioPost(this.zernioInstagramId, caption, wednesday12pm);
+    return this.scheduleZernioPost([
+      { platform: 'instagram', accountId: this.zernioInstagramId }
+    ], caption, wednesday12pm);
   }
 
   // Campaign 2 — TikTok via Zernio (ai4websitedesign.com)
   async scheduleTikTok(script) {
     const thursday6pm = this.getNextWeekday(4, 18, 0);
-    return this.scheduleZernioPost(this.zernioTikTokId, script, thursday6pm);
+    return this.scheduleZernioPost([
+      { platform: 'tiktok', accountId: this.zernioTikTokId }
+    ], script, thursday6pm);
   }
 
   // Campaign 2 — Facebook (manual — log only)
