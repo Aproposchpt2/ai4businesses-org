@@ -77,7 +77,7 @@ exports.handler = async (event) => {
   }
 
   // ── 2. Send email notification to owner ───────────────────────
-  const notifyEmail = process.env.NOTIFY_EMAIL;
+  const notifyEmail = process.env.OWNER_NOTIFICATION_EMAIL || process.env.RESEND_TO_EMAIL;
   const resendKey   = process.env.RESEND_API_KEY;
 
   if (notifyEmail && resendKey) {
