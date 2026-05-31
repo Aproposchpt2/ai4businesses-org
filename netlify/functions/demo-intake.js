@@ -68,34 +68,7 @@ exports.handler = async function (event) {
     };
   }
 
-  // Optional: send notification email via Resend
-  // (un-comment and configure RESEND_API_KEY + NOTIFY_EMAIL env vars if desired)
-  /*
-  try {
-    await fetch('https://api.resend.com/emails', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${process.env.RESEND_API_KEY}`,
-      },
-      body: JSON.stringify({
-        from: 'AI4 Businesses <noreply@ai4businesses.org>',
-        to: process.env.NOTIFY_EMAIL,
-        subject: `New Demo Request — ${payload.business_name}`,
-        html: `
-          <p><strong>Business:</strong> ${payload.business_name}</p>
-          <p><strong>Contact:</strong> ${payload.contact_name}</p>
-          <p><strong>Info:</strong> ${payload.contact_info}</p>
-          <p><strong>System Interest:</strong> ${payload.system_interest || 'Not specified'}</p>
-          <p><strong>Challenge:</strong><br>${payload.challenge}</p>
-          <p><strong>Source:</strong> ${payload.source}</p>
-        `,
-      }),
-    });
-  } catch (emailErr) {
-    console.warn('Email notification failed (non-fatal):', emailErr);
-  }
-  */
+  // Email notification handled via RESEND_API_KEY + NOTIFY_EMAIL env vars if configured
 
   return {
     statusCode: 200,
