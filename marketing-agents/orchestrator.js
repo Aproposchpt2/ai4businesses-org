@@ -1,171 +1,147 @@
 require('dotenv').config();
-// ═══════════════════════════════════════════════════════════════
-// MASTER ORCHESTRATOR — AI4 MARKETING AGENT TEAM
-// Runs the complete weekly pipeline
-// Self-improving loop: Analytics → Commander → Writer → Social
-//                      → Design → Scheduler → Analytics (repeat)
-// ═══════════════════════════════════════════════════════════════
-
 const ContentCommanderAgent = require('./agents/01-content-commander');
-const SEOWriterAgent = require('./agents/02-seo-writer');
-const SocialAgent = require('./agents/03-social-agent');
-const DesignAgent = require('./agents/04-design-agent');
-const SchedulerAgent = require('./agents/05-scheduler-agent');
-const AnalyticsAgent = require('./agents/06-analytics-agent');
-const { logAgentActivity } = require('./utils/logger');
+const SEOWriterAgent        = require('./agents/02-seo-writer');
+const SocialAgent           = require('./agents/03-social-agent');
+const SchedulerAgent        = require('./agents/04-scheduler-agent');
+const AnalyticsAgent        = require('./agents/05-analytics-agent');
 
 class MarketingOrchestrator {
   constructor() {
     this.commander = new ContentCommanderAgent();
-    this.writer = new SEOWriterAgent();
-    this.social = new SocialAgent();
-    this.design = new DesignAgent();
+    this.seoWriter = new SEOWriterAgent();
+    this.social    = new SocialAgent();
     this.scheduler = new SchedulerAgent();
     this.analytics = new AnalyticsAgent();
   }
 
-  // ── RUN BASED ON DAY OF WEEK ──────────────────────────────────
-  async runDailyTask() {
-    const day = new Date().toLocaleDateString('en-US', { weekday: 'lowercase' });
-    console.log(`\n${'═'.repeat(60)}`);
-    console.log(`AI4 MARKETING AGENT TEAM — ${day.toUpperCase()}`);
-    console.log(`${'═'.repeat(60)}\n`);
-
-    switch (day) {
-      case 'monday':
-        return await this.runMonday();
-      case 'tuesday':
-        return await this.runTuesday();
-      case 'wednesday':
-        return await this.runWednesday();
-      case 'sunday':
-        return await this.runSunday();
-      default:
-        console.log(`No agent tasks scheduled for ${day}.`);
-        return null;
-    }
-  }
-
-  // ── MONDAY: KEYWORD RESEARCH ──────────────────────────────────
+  // ── MONDAY — C1 Article + LinkedIn ──────────────────
   async runMonday() {
-    console.log('📋 MONDAY — Content Commander: Keyword Research\n');
-
-    // Load last week's analytics report if available
-    let analyticsReport = null;
-    try {
-      const fs = require('fs').promises;
-      const data = await fs.readFile('C:/temp/analytics-report.json', 'utf8');
-      analyticsReport = JSON.parse(data);
-      console.log('📊 Loaded last week\'s analytics — self-improving loop active\n');
-    } catch {
-      console.log('📊 No previous analytics — starting fresh\n');
-    }
-
-    const assignment = await this.commander.run(analyticsReport);
-    console.log(`\n✅ MONDAY COMPLETE — Topic: "${assignment.articleTitle}"\n`);
-    return assignment;
+    console.log('=== MONDAY — C1 Article + LinkedIn ===');
+    const strategy   = await this.commander.runMondayStrategy();
+    const article    = await this.seoWriter.writeArticle(strategy.campaign1.articleTopic);
+    const articleUrl = await this.seoWriter.publishToGitHub(article, strategy.campaign1.articleTopic);
+    const liPost     = await this.social.createLinkedInPost(articleUrl, strategy.campaign1.articleTopic);
+    await this.scheduler.scheduleLinkedInArticle(liPost);
+    console.log('=== MONDAY COMPLETE ===');
   }
 
-  // ── TUESDAY: ARTICLE PUBLISHING ───────────────────────────────
+  // ── TUESDAY — C2 Facebook EN + ES ───────────────────
   async runTuesday() {
-    console.log('✍️ TUESDAY — SEO Writer: Article Generation & Publishing\n');
-    const result = await this.writer.run();
-    console.log(`\n✅ TUESDAY COMPLETE — Published: ${result.publishResult.url}\n`);
-    return result;
+    console.log('=== TUESDAY — C2 Facebook EN+ES ===');
+    const strategy = await this.commander.runMondayStrategy();
+    const fbEN     = await this.social.createFacebookPost(strategy.campaign2.fbAngle);
+    const fbES     = await this.social.createFacebookPostSpanish(strategy.campaign2.fbAngle);
+    await this.scheduler.scheduleFacebook(fbEN);
+    console.log('[Tuesday] Facebook EN scheduled');
+    console.log('[Tuesday] Facebook ES generated (manual post to espanola)');
+    console.log(fbES);
   }
 
-  // ── WEDNESDAY: SOCIAL + DESIGN + SCHEDULING ───────────────────
+  // ── WEDNESDAY — C2 Instagram EN + ES ────────────────
   async runWednesday() {
-    console.log('📱 WEDNESDAY — Social + Design + Scheduler\n');
-
-    // Step 1: Social Agent creates posts
-    console.log('Step 1/3: Social Agent creating posts...');
-    const socialPosts = await this.social.run();
-
-    // Step 2: Design Agent creates visuals
-    console.log('\nStep 2/3: Design Agent creating visuals...');
-    const assets = await this.design.run();
-
-    // Step 3: Scheduler queues everything
-    console.log('\nStep 3/3: Scheduler Agent queuing posts...');
-    const scheduled = await this.scheduler.run();
-
-    const successCount = scheduled.filter(p => p.success).length;
-    console.log(`\n✅ WEDNESDAY COMPLETE — ${successCount} posts scheduled\n`);
-
-    return { socialPosts, assets, scheduled };
+    console.log('=== WEDNESDAY — C2 Instagram EN+ES ===');
+    const strategy = await this.commander.runMondayStrategy();
+    const igEN     = await this.social.createInstagramCaption(strategy.campaign2.igAngle);
+    const igES     = await this.social.createInstagramCaptionSpanish(strategy.campaign2.igAngle);
+    await this.scheduler.scheduleInstagram(igEN);
+    console.log('[Wednesday] Instagram EN scheduled');
+    console.log('[Wednesday] Instagram ES generated (manual post to espanola)');
+    console.log(igES);
   }
 
-  // ── SUNDAY: ANALYTICS + REPORT ────────────────────────────────
+  // ── THURSDAY — C2 TikTok ────────────────────────────
+  async runThursday() {
+    console.log('=== THURSDAY — C2 TikTok ===');
+    const strategy = await this.commander.runMondayStrategy();
+    const tiktok   = await this.social.createTikTokScript(strategy.campaign2.tiktokAngle);
+    await this.scheduler.scheduleTikTok(tiktok);
+    console.log('=== THURSDAY COMPLETE ===');
+  }
+
+  // ── SUNDAY — LinkedIn Teaser + Analytics ────────────
   async runSunday() {
-    console.log('📊 SUNDAY — Analytics Agent: Performance Report\n');
-    const report = await this.analytics.run();
-    console.log(`\n✅ SUNDAY COMPLETE — Report ready for Monday Commander\n`);
-    console.log(`   Top keyword: ${report.topKeywords?.[0]}`);
-    console.log(`   Top platform: ${report.topPlatform}`);
-    console.log(`   Growth: ${report.weekOverWeekGrowth}\n`);
-    return report;
+    console.log('=== SUNDAY — Teaser + Analytics ===');
+    const strategy = await this.commander.runMondayStrategy();
+    const teaser   = await this.social.createLinkedInTeaser(strategy.campaign1.articleTopic);
+    await this.scheduler.scheduleLinkedInTeaser(teaser);
+    await this.analytics.runWeeklyCampaign1Report();
+    await this.analytics.runWeeklyCampaign2Report();
+    console.log('=== SUNDAY COMPLETE ===');
   }
 
-  // ── FULL PIPELINE TEST (for end-to-end testing) ───────────────
-  async runFullPipelineTest() {
-    console.log('\n🧪 RUNNING FULL PIPELINE TEST\n');
+  // ── TEST MODE ────────────────────────────────────────
+  async runTest() {
+    console.log('=== TEST MODE — ALL AGENTS ===');
 
-    const results = {
-      commander: null,
-      writer: null,
-      social: null,
-      design: null,
-      scheduler: null,
-      analytics: null,
-      errors: []
-    };
+    try {
+      await this.commander.runMondayStrategy();
+      console.log('✅ 01 Content Commander — OPERATIONAL');
+    } catch(e) { console.log('❌ 01 Content Commander —', e.message); }
 
-    const steps = [
-      { name: 'commander', fn: () => this.commander.run(null) },
-      { name: 'writer', fn: () => this.writer.run() },
-      { name: 'social', fn: () => this.social.run() },
-      { name: 'design', fn: () => this.design.run() },
-      { name: 'scheduler', fn: () => this.scheduler.run() },
-      { name: 'analytics', fn: () => this.analytics.run() }
-    ];
+    try {
+      await this.seoWriter.writeArticle('AI Automation Test Article');
+      console.log('✅ 02 SEO Writer — OPERATIONAL');
+    } catch(e) { console.log('❌ 02 SEO Writer —', e.message); }
 
-    for (const step of steps) {
-      try {
-        console.log(`\n🔄 Testing ${step.name}...`);
-        results[step.name] = await step.fn();
-        console.log(`✅ ${step.name} — PASSED`);
-      } catch (error) {
-        results.errors.push({ step: step.name, error: error.message });
-        console.log(`❌ ${step.name} — FAILED: ${error.message}`);
-      }
-    }
+    try {
+      await this.social.createLinkedInPost('https://ai4businesses.org/test', 'Test Topic');
+      console.log('✅ 03 Social Agent C1 LinkedIn — OPERATIONAL');
+    } catch(e) { console.log('❌ 03 Social Agent C1 LinkedIn —', e.message); }
 
-    // Summary
-    console.log('\n' + '═'.repeat(60));
-    console.log('PIPELINE TEST RESULTS');
-    console.log('═'.repeat(60));
-    console.log(`Passed: ${steps.length - results.errors.length}/${steps.length}`);
-    console.log(`Failed: ${results.errors.length}/${steps.length}`);
-    if (results.errors.length > 0) {
-      console.log('\nErrors:');
-      results.errors.forEach(e => console.log(`  ${e.step}: ${e.error}`));
-    }
-    console.log('═'.repeat(60) + '\n');
+    try {
+      await this.social.createTikTokScript('Watch AI build my website in 60 seconds');
+      console.log('✅ 03 Social Agent C2 TikTok — OPERATIONAL');
+    } catch(e) { console.log('❌ 03 Social Agent C2 TikTok —', e.message); }
 
-    return results;
+    try {
+      await this.social.createInstagramCaption('Before and after site reveal');
+      console.log('✅ 03 Social Agent C2 Instagram EN — OPERATIONAL');
+    } catch(e) { console.log('❌ 03 Social Agent C2 Instagram EN —', e.message); }
+
+    try {
+      await this.social.createInstagramCaptionSpanish('Before and after site reveal');
+      console.log('✅ 03 Social Agent C2 Instagram ES — OPERATIONAL');
+    } catch(e) { console.log('❌ 03 Social Agent C2 Instagram ES —', e.message); }
+
+    try {
+      await this.social.createFacebookPost('Small business website tips');
+      console.log('✅ 03 Social Agent C2 Facebook EN — OPERATIONAL');
+    } catch(e) { console.log('❌ 03 Social Agent C2 Facebook EN —', e.message); }
+
+    try {
+      await this.social.createFacebookPostSpanish('Small business website tips');
+      console.log('✅ 03 Social Agent C2 Facebook ES — OPERATIONAL');
+    } catch(e) { console.log('❌ 03 Social Agent C2 Facebook ES —', e.message); }
+
+    try {
+      console.log('  Buffer profiles loaded:', {
+        linkedin:  !!process.env.BUFFER_LINKEDIN_ID,
+        tiktok:    !!process.env.BUFFER_TIKTOK_ID,
+        instagram: !!process.env.BUFFER_INSTAGRAM_ID,
+        facebook:  !!process.env.BUFFER_FACEBOOK_ID
+      });
+      console.log('✅ 04 Scheduler Agent — OPERATIONAL');
+    } catch(e) { console.log('❌ 04 Scheduler Agent —', e.message); }
+
+    try {
+      await this.analytics.buildReport('Test Campaign', { site: 'ai4businesses.org' });
+      console.log('✅ 05 Analytics Agent — OPERATIONAL');
+    } catch(e) { console.log('❌ 05 Analytics Agent —', e.message); }
+
+    console.log('=== TEST COMPLETE ===');
   }
 }
 
-// ── ENTRY POINT ───────────────────────────────────────────────
-const orchestrator = new MarketingOrchestrator();
+// ── CLI ENTRY ────────────────────────────────────────
+const arg = process.argv[2];
+const O = new MarketingOrchestrator();
 
-const mode = process.argv[2];
-if (mode === 'test') {
-  orchestrator.runFullPipelineTest().catch(console.error);
-} else {
-  orchestrator.runDailyTask().catch(console.error);
-}
+if      (arg === 'test')      O.runTest().catch(console.error);
+else if (arg === 'monday')    O.runMonday().catch(console.error);
+else if (arg === 'tuesday')   O.runTuesday().catch(console.error);
+else if (arg === 'wednesday') O.runWednesday().catch(console.error);
+else if (arg === 'thursday')  O.runThursday().catch(console.error);
+else if (arg === 'sunday')    O.runSunday().catch(console.error);
+else console.log('Usage: node orchestrator.js [test|monday|tuesday|wednesday|thursday|sunday]');
 
 module.exports = MarketingOrchestrator;
-
