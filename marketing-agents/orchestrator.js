@@ -22,6 +22,10 @@ class MarketingOrchestrator {
     const articleUrl = await this.seoWriter.publishToGitHub(article, strategy.campaign1.articleTopic);
     const liPost     = await this.social.createLinkedInPost(articleUrl, strategy.campaign1.articleTopic);
     await this.scheduler.scheduleLinkedInArticle(liPost);
+    await this.notifyOwner({
+      subject: '[Campaign 1] Monday Pipeline Complete ✅',
+      body: `Article published: ${articleUrl}\n\nLinkedIn post scheduled for Monday 8AM.\n\nNext run: Sunday 5PM teaser.`
+    });
     console.log('=== MONDAY COMPLETE ===');
   }
 
@@ -129,6 +133,25 @@ class MarketingOrchestrator {
     } catch(e) { console.log('❌ 05 Analytics Agent —', e.message); }
 
     console.log('=== TEST COMPLETE ===');
+  }
+
+  // ── NOTIFY OWNER ─────────────────────────────────────
+  async notifyOwner({ subject, body }) {
+    if (!process.env.RESEND_API_KEY) return;
+    await fetch('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${process.env.RESEND_API_KEY}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        from: 'marketing@ai4businesses.org',
+        to: process.env.OWNER_EMAIL,
+        subject,
+        text: body
+      })
+    });
+    console.log('[Orchestrator] ✅ Owner notified via email');
   }
 }
 
