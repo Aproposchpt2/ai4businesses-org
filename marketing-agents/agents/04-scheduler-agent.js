@@ -3,11 +3,11 @@ require('dotenv').config();
 class SchedulerAgent {
   constructor() {
     // Buffer — LinkedIn only (ai4businesses.org)
-    this.bufferKey     = process.env.BUFFER_ACCESS_TOKEN;
-    this.bufferApi     = 'https://api.bufferapp.com/1';
-    this.linkedinId    = process.env.BUFFER_LINKEDIN_ID;
+    this.bufferKey  = process.env.BUFFER_ACCESS_TOKEN;
+    this.bufferApi  = 'https://api.bufferapp.com/1';
+    this.linkedinId = process.env.BUFFER_LINKEDIN_ID;
 
-    // Zernio — TikTok + Instagram (ai4websitedesign.com)
+    // Zernio — TikTok + Instagram (Campaign 2)
     this.zernioKey         = process.env.ZERNIO_API_KEY;
     this.zernioInstagramId = process.env.ZERNIO_INSTAGRAM_PROFILE_ID;
     this.zernioTikTokId    = process.env.ZERNIO_TIKTOK_PROFILE_ID;
@@ -22,11 +22,7 @@ class SchedulerAgent {
         'Authorization': `Bearer ${this.bufferKey}`,
         'Content-Type':  'application/x-www-form-urlencoded'
       },
-      body: new URLSearchParams({
-        profile_ids:  profileId,
-        text,
-        scheduled_at: scheduledAt
-      })
+      body: new URLSearchParams({ profile_ids: profileId, text, scheduled_at: scheduledAt })
     });
 
     if (!res.ok) {
@@ -35,7 +31,7 @@ class SchedulerAgent {
     }
 
     const data = await res.json();
-    console.log(`[Scheduler] ✅ Buffer scheduled to ${profileId}:`, data.id);
+    console.log(`[Scheduler C1] ✅ LinkedIn scheduled:`, data.id);
     return data;
   }
 
@@ -48,7 +44,8 @@ class SchedulerAgent {
     return result.toISOString();
   }
 
-  // Campaign 1 — LinkedIn via Buffer
+  // ── CAMPAIGN 1 — LinkedIn via Buffer ────────────────
+
   async scheduleLinkedInArticle(post) {
     const monday8am = this.getNextWeekday(1, 8, 0);
     return this.scheduleBufferPost(this.linkedinId, post, monday8am);
@@ -59,51 +56,66 @@ class SchedulerAgent {
     return this.scheduleBufferPost(this.linkedinId, post, sunday5pm);
   }
 
-  // ── ZERNIO — TikTok + Instagram (ai4websitedesign.com) ──
+  // ── CAMPAIGN 2 — Zernio core method ─────────────────
 
-  async scheduleZernioPost(platforms, content, scheduledAt) {
+  async scheduleZernio(platform, content, scheduledAt) {
+    const profileIds = {
+      instagram: process.env.ZERNIO_INSTAGRAM_PROFILE_ID,
+      tiktok:    process.env.ZERNIO_TIKTOK_PROFILE_ID
+    };
+
     const res = await fetch('https://zernio.com/api/v1/posts', {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${this.zernioKey}`,
+        'Authorization': `Bearer ${process.env.ZERNIO_API_KEY}`,
         'Content-Type':  'application/json'
       },
       body: JSON.stringify({
         content,
         scheduledFor: scheduledAt,
-        platforms
+        platforms: [{ platform, accountId: profileIds[platform] }]
       })
     });
 
-    if (!res.ok) {
-      const err = await res.text();
-      throw new Error(`Zernio API error: ${err}`);
-    }
+    if (!res.ok) throw new Error(`Zernio error (${platform}): ${await res.text()}`);
 
     const data = await res.json();
-    console.log(`[Scheduler] ✅ Zernio scheduled (${platforms.map(p => p.platform).join('+')})`, data.id || '');
+    console.log(`[Scheduler C2] ✅ ${platform} scheduled:`, data._id);
     return data;
   }
 
-  // Campaign 2 — Instagram via Zernio (ai4websitedesign.com)
-  async scheduleInstagram(caption) {
-    const wednesday12pm = this.getNextWeekday(3, 12, 0);
-    return this.scheduleZernioPost([
-      { platform: 'instagram', accountId: this.zernioInstagramId }
-    ], caption, wednesday12pm);
+  // ── CAMPAIGN 2 — Scheduled posts ────────────────────
+
+  async scheduleC2Instagram(post) {
+    const tuesday10am = this.getNextWeekday(2, 10, 0);
+    return this.scheduleZernio('instagram', post, tuesday10am);
   }
 
-  // Campaign 2 — TikTok via Zernio (ai4websitedesign.com)
-  async scheduleTikTok(script) {
+  async scheduleC2TikTok(post) {
     const thursday6pm = this.getNextWeekday(4, 18, 0);
-    return this.scheduleZernioPost([
-      { platform: 'tiktok', accountId: this.zernioTikTokId }
-    ], script, thursday6pm);
+    return this.scheduleZernio('tiktok', post, thursday6pm);
   }
 
-  // Campaign 2 — Facebook (manual — log only)
+  async scheduleC2FridayRecap(post) {
+    const friday9am = this.getNextWeekday(5, 9, 0);
+    await this.scheduleZernio('instagram', post, friday9am);
+    await this.scheduleZernio('tiktok',    post, friday9am);
+  }
+
+  // ── CAMPAIGN 2 — Legacy aliases ─────────────────────
+
+  async scheduleInstagram(caption) {
+    return this.scheduleC2Instagram(caption);
+  }
+
+  async scheduleTikTok(script) {
+    return this.scheduleC2TikTok(script);
+  }
+
+  // ── CAMPAIGN 2 — Facebook (manual — log only) ────────
+
   async scheduleFacebook(post) {
-    console.log('[Scheduler] Facebook post ready for manual posting to ai4businesses.org:');
+    console.log('[Scheduler C2] Facebook — manual post:');
     console.log(post);
     return { status: 'manual', platform: 'facebook' };
   }
