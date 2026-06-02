@@ -45,3 +45,23 @@
 
 [functions]
   node_bundler = "esbuild"
+
+[[scheduled_functions]]
+  name     = "marketing-monday"
+  schedule = "0 15 * * 1"
+
+[[scheduled_functions]]
+  name     = "marketing-tuesday"
+  schedule = "0 17 * * 2"
+
+[[scheduled_functions]]
+  name     = "marketing-wednesday"
+  schedule = "0 19 * * 3"
+
+[[scheduled_functions]]
+  name     = "marketing-thursday"
+  schedule = "0 1 * * 4"
+
+[[scheduled_functions]]
+  name     = "marketing-sunday"
+  schedule = "0 0 * * 0"
