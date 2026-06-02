@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>AI Business Automation Insights | AI4 Businesses</title>
+  <meta name="description" content="Weekly articles on AI automation, business efficiency, and reducing operating costs through practical AI systems."/>
+  <meta property="og:title" content="AI Business Automation Insights | AI4 Businesses"/>
+  <meta property="og:url" content="https://ai4businesses.org/blog/"/>
+  <link rel="canonical" href="https://ai4businesses.org/blog/"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Sans:wght@300;400;500;600&family=Syncopate:wght@400;700&display=swap" rel="stylesheet"/>
+  <style>
+    :root{
+      --black:#020407;--deep:#060C14;--surface:#0A1220;--panel:#0E1928;
+      --border:rgba(74,127,255,0.15);--blue:#4A7FFF;--blue-bright:#6B9FFF;
+      --blue-dim:rgba(74,127,255,0.25);--chrome:#C8D8F0;--white:#F5F8FF;
+      --text:#A8B8D0;--muted:#586880;--gold:#C8A84B;
+      --glow-blue:0 0 60px rgba(74,127,255,0.3);
+      --ease:cubic-bezier(0.16,1,0.3,1);
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{background:var(--black);color:var(--text);font-family:"DM Sans",sans-serif;font-weight:300;line-height:1.7;overflow-x:hidden}
+    body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
+      background-image:radial-gradient(circle at 20% 10%,rgba(74,127,255,0.10),transparent 28rem),
+        radial-gradient(circle at 85% 20%,rgba(200,168,75,0.06),transparent 24rem),
+        url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");}
+    ::-webkit-scrollbar{width:3px}::-webkit-scrollbar-track{background:var(--black)}::-webkit-scrollbar-thumb{background:var(--blue-dim);border-radius:2px}
+    h1,h2,h3{font-family:"Cormorant Garamond",serif;font-weight:300;color:var(--white);letter-spacing:.02em}
+    a{color:inherit;text-decoration:none}
+    section,header,footer{position:relative;z-index:1}
+    .container{max-width:1100px;margin:0 auto;padding:0 3rem}
+
+    /* NAV */
+    nav{position:sticky;top:0;z-index:100;background:#1B3A6B;padding:16px clamp(18px,4vw,52px);display:flex;align-items:center;justify-content:space-between;gap:20px;box-shadow:0 2px 8px rgba(27,58,107,0.18)}
+    .nav-brand{display:flex;align-items:center;gap:12px;text-decoration:none}
+    .nav-mark{width:38px;height:38px;background:#B8860B;border-radius:8px;display:grid;place-items:center;font-weight:700;font-size:.95rem;color:#fff;font-family:"DM Sans",sans-serif}
+    .nav-text{display:flex;flex-direction:column}
+    .nav-name{font-size:.95rem;font-weight:700;color:#fff;line-height:1.2}
+    .nav-sub{font-size:.62rem;color:rgba(255,255,255,.6);letter-spacing:.06em}
+    .nav-links{display:flex;gap:6px}
+    .nav-links a{font-size:.78rem;color:rgba(255,255,255,.75);padding:7px 14px;border-radius:6px;transition:.2s;font-weight:500}
+    .nav-links a:hover,.nav-links a.active{color:#B8860B;background:rgba(255,255,255,.06)}
+    .nav-cta{background:#fff;color:#1B3A6B;font-weight:700;font-size:.8rem;padding:9px 18px;border-radius:6px;transition:background .2s}
+    .nav-cta:hover{background:#B8860B;color:#fff}
+    @media(max-width:768px){.nav-links{display:none}}
+
+    /* PAGE HEADER */
+    .page-header{padding:5rem 0 3.5rem;border-bottom:1px solid var(--border)}
+    .eyebrow{display:flex;align-items:center;gap:.75rem;margin-bottom:1rem}
+    .eyebrow::before{content:"";width:22px;height:1px;background:var(--blue)}
+    .eyebrow span{font-family:"Syncopate",sans-serif;font-size:.58rem;letter-spacing:.25em;text-transform:uppercase;color:var(--blue-bright)}
+    .page-title{font-size:clamp(2.2rem,4vw,3.8rem);line-height:1.05;margin-bottom:1rem;color:var(--white)}
+    .page-subtitle{font-size:1rem;color:var(--text);max-width:540px;line-height:1.8}
+
+    /* ARTICLES GRID */
+    .articles-section{padding:4rem 0 6rem}
+    .articles-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:1.5rem}
+    .article-card{background:var(--panel);border:1px solid var(--border);border-radius:14px;padding:1.8rem;display:flex;flex-direction:column;gap:.9rem;transition:border-color .3s,transform .3s;cursor:pointer}
+    .article-card:hover{border-color:var(--blue);transform:translateY(-3px)}
+    .card-meta{display:flex;align-items:center;gap:.6rem;flex-wrap:wrap}
+    .card-tag{font-family:"Syncopate",sans-serif;font-size:.52rem;letter-spacing:.15em;text-transform:uppercase;color:var(--blue-bright);background:rgba(74,127,255,.08);border:1px solid var(--border);border-radius:100px;padding:.3rem .8rem}
+    .card-date{font-size:.72rem;color:var(--muted)}
+    .card-title{font-family:"Cormorant Garamond",serif;font-size:1.35rem;font-weight:300;color:var(--white);line-height:1.2}
+    .card-excerpt{font-size:.88rem;color:var(--text);line-height:1.7;flex:1}
+    .card-link{display:flex;align-items:center;gap:.4rem;font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--blue-bright);margin-top:auto;padding-top:.5rem}
+    .card-link svg{transition:transform .2s}
+    .article-card:hover .card-link svg{transform:translateX(3px)}
+
+    /* LOADING / EMPTY STATES */
+    .loading-state{text-align:center;padding:4rem;color:var(--muted)}
+    .loading-dots{display:inline-flex;gap:.4rem;margin-top:.8rem}
+    .loading-dots span{width:7px;height:7px;border-radius:50%;background:var(--blue);animation:dot .8s ease-in-out infinite alternate}
+    .loading-dots span:nth-child(2){animation-delay:.2s}
+    .loading-dots span:nth-child(3){animation-delay:.4s}
+    @keyframes dot{from{opacity:.2;transform:scale(.7)}to{opacity:1;transform:scale(1)}}
+    .empty-state{text-align:center;padding:5rem 2rem;color:var(--muted)}
+    .empty-state h3{font-size:1.4rem;color:var(--white);margin-bottom:.5rem}
+
+    /* FOOTER */
+    footer{background:#1B3A6B;padding:22px 3rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
+    .footer-links{display:flex;gap:20px;flex-wrap:wrap}
+    .footer-links a{font-size:.78rem;color:rgba(255,255,255,.6);transition:color .2s}
+    .footer-links a:hover{color:#B8860B}
+    .footer-copy{font-size:.72rem;color:rgba(255,255,255,.4)}
+
+    @media(max-width:640px){.container{padding:0 1.5rem}.articles-grid{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-brand" href="/">
+    <div class="nav-mark">A4</div>
+    <div class="nav-text">
+      <span class="nav-name">AI4 Businesses</span>
+      <span class="nav-sub">by Apropos Group LLC</span>
+    </div>
+  </a>
+  <div class="nav-links">
+    <a href="/systems.html">Systems</a>
+    <a href="/blog/" class="active">Articles</a>
+    <a href="/#about">About</a>
+    <a href="/contact.html">Contact</a>
+  </div>
+  <a class="nav-cta" href="https://aiflowdeskpro.com" target="_blank" rel="noopener">Explore FlowDesk Pro</a>
+</nav>
+
+<header class="page-header">
+  <div class="container">
+    <div class="eyebrow"><span>Articles</span></div>
+    <h1 class="page-title">AI Business Automation Insights</h1>
+    <p class="page-subtitle">Weekly articles on how businesses are using AI to reduce costs, capture more leads, and operate without adding headcount.</p>
+  </div>
+</header>
+
+<section class="articles-section">
+  <div class="container">
+    <div id="articles-grid" class="articles-grid">
+      <div class="loading-state">
+        <div>Loading articles</div>
+        <div class="loading-dots"><span></span><span></span><span></span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-links">
+    <a href="/">Home</a>
+    <a href="/systems.html">Systems</a>
+    <a href="/contact.html">Contact</a>
+    <a href="https://aiflowdeskpro.com" target="_blank">FlowDesk Pro</a>
+    <a href="https://ai4businesses.org/privacy">Privacy</a>
+    <a href="https://ai4businesses.org/terms">Terms</a>
+  </div>
+  <div class="footer-copy">© 2026 Apropos Group LLC · AI4 Businesses</div>
+</footer>
+
+<script>
+const REPO_OWNER = 'Aproposchpt2';
+const REPO_NAME  = 'ai4businesses-org';
+const BLOG_PATH  = 'blog';
+
+function slugToTitle(filename) {
+  return filename
+    .replace(/^\d{4}-\d{2}-\d{2}-/, '')
+    .replace(/\.md$/, '')
+    .replace(/-/g, ' ')
+    .replace(/\b\w/g, c => c.toUpperCase());
+}
+
+function slugToDate(filename) {
+  const m = filename.match(/^(\d{4}-\d{2}-\d{2})/);
+  if (!m) return '';
+  const [y, mo, d] = m[1].split('-');
+  return new Date(y, mo - 1, d).toLocaleDateString('en-US', { year:'numeric', month:'long', day:'numeric' });
+}
+
+function guessTag(title) {
+  const t = title.toLowerCase();
+  if (t.includes('crm') || t.includes('lead')) return 'CRM';
+  if (t.includes('automation') || t.includes('automat')) return 'Automation';
+  if (t.includes('contact center') || t.includes('phone') || t.includes('call')) return 'Contact Center';
+  if (t.includes('cost') || t.includes('roi') || t.includes('saving')) return 'ROI';
+  if (t.includes('ai') || t.includes('artificial')) return 'AI';
+  return 'Insights';
+}
+
+async function loadArticles() {
+  const grid = document.getElementById('articles-grid');
+  try {
+    const res = await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${BLOG_PATH}`);
+    if (!res.ok) throw new Error('Failed to fetch');
+    const files = await res.json();
+
+    const articles = files
+      .filter(f => f.name.endsWith('.md') && f.name !== '.gitkeep' && f.name !== 'README.md')
+      .sort((a, b) => b.name.localeCompare(a.name)); // newest first
+
+    if (!articles.length) {
+      grid.innerHTML = `<div class="empty-state"><h3>Articles coming weekly</h3><p>The AI Marketing Agent Team publishes new content every week. Check back soon.</p></div>`;
+      return;
+    }
+
+    grid.innerHTML = articles.map(file => {
+      const title   = slugToTitle(file.name);
+      const date    = slugToDate(file.name);
+      const tag     = guessTag(title);
+      const slug    = file.name.replace(/\.md$/, '');
+      const url     = `/blog/post.html?slug=${encodeURIComponent(slug)}`;
+      return `
+        <article class="article-card" onclick="location.href='${url}'">
+          <div class="card-meta">
+            <span class="card-tag">${tag}</span>
+            ${date ? `<span class="card-date">${date}</span>` : ''}
+          </div>
+          <h2 class="card-title">${title}</h2>
+          <p class="card-excerpt">Practical insights on AI automation for business. Click to read the full article.</p>
+          <div class="card-link">
+            Read Article
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </div>
+        </article>`;
+    }).join('');
+
+  } catch (err) {
+    console.error(err);
+    grid.innerHTML = `<div class="empty-state"><h3>Articles coming soon</h3><p>New content published weekly.</p></div>`;
+  }
+}
+
+loadArticles();
+</script>
+</body>
+</html>
