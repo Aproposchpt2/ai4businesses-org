@@ -75,7 +75,7 @@ Requirements:
 - Highlight live template + color switching
 - "See your site LIVE before you approve it"
 - No competitor offers this — emphasize it
-- CTA: Visit ai4websitedesign.com
+- CTA: Visit platinum.ai4websitedesign.com
 - Format with labels: [HOOK] [DEMO] [CTA]
 
 Return script only. No preamble.`
@@ -99,7 +99,7 @@ Requirements:
 - Strong visual hook opening line
 - Highlight: "See your site LIVE before you approve it"
 - Live template + color switching — unrivaled, no competitor offers this
-- CTA: Link in bio → ai4websitedesign.com
+- CTA: Link in bio → platinum.ai4websitedesign.com
 - 10-15 hashtags at end
 
 Return caption only. No preamble.`
@@ -147,7 +147,7 @@ Requirements:
 - Include a question to drive engagement
 - Highlight: "See your site LIVE before you approve it"
 - Live template + color switching — no competitor offers this
-- CTA: ai4websitedesign.com
+- CTA: platinum.ai4websitedesign.com
 - 3-5 hashtags
 
 Return post only. No preamble.`

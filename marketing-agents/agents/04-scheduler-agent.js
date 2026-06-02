@@ -7,7 +7,7 @@ class SchedulerAgent {
     this.bufferApi  = 'https://api.bufferapp.com/1';
     this.linkedinId = process.env.BUFFER_LINKEDIN_ID;
 
-    // Zernio — TikTok + Instagram (Campaign 2)
+    // Zernio — TikTok + Instagram (Campaign 2 → ai4websitedesign.com)
     this.zernioKey         = process.env.ZERNIO_API_KEY;
     this.zernioInstagramId = process.env.ZERNIO_INSTAGRAM_PROFILE_ID;
     this.zernioTikTokId    = process.env.ZERNIO_TIKTOK_PROFILE_ID;
