@@ -87,19 +87,21 @@ class SchedulerAgent {
   // ── CAMPAIGN 2 — Scheduled posts ────────────────────
 
   async scheduleC2Instagram(post) {
-    const tuesday10am = this.getNextWeekday(2, 10, 0);
-    return this.scheduleZernio('instagram', post, tuesday10am);
+    console.log('[Scheduler C2] Instagram caption ready for manual posting:');
+    console.log(post);
+    return { status: 'manual', platform: 'instagram', content: post };
   }
 
   async scheduleC2TikTok(post) {
-    const thursday6pm = this.getNextWeekday(4, 18, 0);
-    return this.scheduleZernio('tiktok', post, thursday6pm);
+    console.log('[Scheduler C2] TikTok script ready for manual posting:');
+    console.log(post);
+    return { status: 'manual', platform: 'tiktok', content: post };
   }
 
   async scheduleC2FridayRecap(post) {
-    const friday9am = this.getNextWeekday(5, 9, 0);
-    await this.scheduleZernio('instagram', post, friday9am);
-    await this.scheduleZernio('tiktok',    post, friday9am);
+    console.log('[Scheduler C2] Friday recap ready for manual posting:');
+    console.log(post);
+    return { status: 'manual', platform: 'instagram+tiktok', content: post };
   }
 
   // ── CAMPAIGN 2 — Legacy aliases ─────────────────────

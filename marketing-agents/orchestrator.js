@@ -48,9 +48,11 @@ class MarketingOrchestrator {
     const igEN     = await this.social.createInstagramCaption(strategy.campaign2.igAngle);
     const igES     = await this.social.createInstagramCaptionSpanish(strategy.campaign2.igAngle);
     await this.scheduler.scheduleInstagram(igEN);
-    console.log('[Wednesday] Instagram EN scheduled');
-    console.log('[Wednesday] Instagram ES generated (manual post to espanola)');
-    console.log(igES);
+    await this.notifyOwner({
+      subject: '[Campaign 2] Instagram Content Ready for Posting',
+      body: `Instagram Caption (English):\n\n${igEN}\n\n---\n\nInstagram Caption (Spanish — post to espanola):\n\n${igES}\n\n---\n\nPost to:\nInstagram: @jmitchell1126\nCTA: platinum.ai4websitedesign.com\n\nAttach your own visual asset before posting.`
+    });
+    console.log('=== WEDNESDAY COMPLETE ===');
   }
 
   // ── THURSDAY — C2 TikTok ────────────────────────────
@@ -59,6 +61,10 @@ class MarketingOrchestrator {
     const strategy = await this.commander.runMondayStrategy();
     const tiktok   = await this.social.createTikTokScript(strategy.campaign2.tiktokAngle);
     await this.scheduler.scheduleTikTok(tiktok);
+    await this.notifyOwner({
+      subject: '[Campaign 2] TikTok Script Ready for Posting',
+      body: `TikTok Script:\n\n${tiktok}\n\n---\n\nPost to:\nTikTok: @ai4websitedesign\nCTA: platinum.ai4websitedesign.com\n\nRecord your video using this script, then post to TikTok.`
+    });
     console.log('=== THURSDAY COMPLETE ===');
   }
 
