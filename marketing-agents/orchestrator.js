@@ -73,9 +73,15 @@ class MarketingOrchestrator {
     console.log('=== SUNDAY — Teaser + Analytics ===');
     const strategy = await this.commander.runMondayStrategy();
     const teaser   = await this.social.createLinkedInTeaser(strategy.campaign1.articleTopic);
-    await this.scheduler.scheduleLinkedInTeaser(teaser);
+    // Log teaser for manual posting
+    console.log('[Sunday] LinkedIn teaser ready for manual posting:');
+    console.log(teaser);
     await this.analytics.runWeeklyCampaign1Report();
     await this.analytics.runWeeklyCampaign2Report();
+    await this.notifyOwner({
+      subject: '[Campaign 1] Sunday LinkedIn Teaser Ready',
+      body: `LinkedIn Teaser (post Sunday 5PM PST):\n\n${teaser}\n\n---\n\nPost to: LinkedIn\nLink to: https://ai4businesses.org\n\nNext run: Monday 8AM — full article + LinkedIn post.`
+    });
     console.log('=== SUNDAY COMPLETE ===');
   }
 
