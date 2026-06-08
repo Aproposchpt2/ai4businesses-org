@@ -44,8 +44,7 @@
     Cache-Control = "public, max-age=0, must-revalidate"
 
 [functions]
-  node_bundler = "esbuild"
-  external_node_modules = ["@anthropic-ai/sdk", "@octokit/rest", "dotenv"]
+  node_bundler = "nft"
 
 [[scheduled_functions]]
   name     = "marketing-monday"
