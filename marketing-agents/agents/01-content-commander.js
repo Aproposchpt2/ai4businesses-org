@@ -16,36 +16,33 @@ class ContentCommanderAgent {
     const keywords     = await this.generateKeywords();
     const articleTopic = await this.selectArticleTopic(keywords);
 
-    // Campaign 2 angles — mix of product demos + agency/income hooks
-    const tiktokAngles = [
-      'Watch AI build my website in 60 seconds',
-      'Before and after site reveal',
-      'Live color switching demo',
-      'Live template switching demo',
-      'Your website approved before it goes live',
-      'How I would charge $1,500 for a website that takes 20 minutes to build',
-      'Want a side hustle in 2026? Build AI websites for local businesses',
-      'This is how anyone can run a website agency with one subscription',
-      'The business model most people are sleeping on right now'
-    ];
-
-    const instagramAngles = [
-      'Template showcase visual',
-      'Color palette switching demo',
-      'Client site spotlight reveal',
-      'Before and after comparison',
-      'The agency opportunity hidden inside this AI tool',
-      'From zero to website agency — what the subscription actually unlocks',
-      'Side-by-side: what a client pays vs what it costs you to deliver'
-    ];
-
+    // Campaign 2 — Facebook personal page angles (website design / agency opportunity)
     const facebookAngles = [
-      'Small business community tips',
-      'Website checklist post',
-      'Client success story format',
-      'Question that drives engagement',
-      'How to start a website business with no design experience',
-      'Real talk: what white label AI tools actually mean for freelancers'
+      'Free website builder — see your site live before you approve it',
+      'How to start a website side hustle using AI — no design skills needed',
+      'I charged $1,500 for a website that took 20 minutes to build',
+      'The free website offer local business owners are missing',
+      'Before and after: what an AI-built website looks like',
+      'How anyone can run a website agency in 2026 with one subscription',
+      'Want to make extra income? Build websites for local businesses with AI'
+    ];
+
+    // Campaign 2 — TikTok angles (website design demos — for future use)
+    const tiktokAngles = [
+      'Watch AI build a complete website in 60 seconds',
+      'See your site live before it goes live — no competitor offers this',
+      'Live color switching demo — pick your brand palette in real time',
+      'How I would charge $1,500 for a website that takes 20 minutes to build',
+      'The side hustle most people are sleeping on in 2026'
+    ];
+
+    // Campaign 2 — Instagram angles (for future use)
+    const instagramAngles = [
+      'Template showcase — 12 design systems, zero templates',
+      'Color palette switching live demo',
+      'Before and after client site reveal',
+      'The agency opportunity inside a free website builder',
+      'Side-by-side: what a client pays vs what it costs you to deliver'
     ];
 
     const output = {
@@ -55,9 +52,9 @@ class ContentCommanderAgent {
         articleTopic
       },
       campaign2: {
+        fbAngle:     this.selectAngle(facebookAngles),
         tiktokAngle: this.selectAngle(tiktokAngles),
-        igAngle:     this.selectAngle(instagramAngles),
-        fbAngle:     this.selectAngle(facebookAngles)
+        igAngle:     this.selectAngle(instagramAngles)
       }
     };
 
@@ -73,13 +70,13 @@ class ContentCommanderAgent {
         role: 'user',
         content: `Generate 12 high-intent SEO keywords across two angles:
 
-Angle 1 — AI business automation (6 keywords):
-Target: small business owners looking to automate operations, replace manual work, reduce costs.
-Topics: AI contact center, CRM automation, small business efficiency, AI receptionist.
+Angle 1 — AI systems building + business automation (6 keywords):
+Target: business owners and professionals searching for AI-powered business tools, contact centers, CRM, and automation. Also professionals who follow AI systems builders on LinkedIn.
+Topics: AI business systems, AI contact center for small business, FlowDesk Pro CRM, business automation 2026, AI lead management, government contractor tools.
 
-Angle 2 — Agency/income opportunity (6 keywords):
-Target: entrepreneurs, freelancers, side-hustlers who want to build a website business or resell AI tools.
-Topics: how to start a website business, white label website builder, AI website agency, make money building websites, website reseller.
+Angle 2 — CapGen + federal contracting (6 keywords):
+Target: federal contractors, small businesses pursuing government contracts, and companies needing SAM.gov capability statements.
+Topics: capability statement generator, federal contractor tools, SAM.gov automation, government contract bid preparation, CapGen, AI for federal contractors.
 
 Return as a flat JSON array of 12 strings only. No preamble. No markdown.`
       }]
@@ -99,18 +96,23 @@ Return as a flat JSON array of 12 strings only. No preamble. No markdown.`
 
   async selectArticleTopic(keywords) {
     const topics = [
-      // ── Original C1 topics — FlowDesk Pro / AI automation ──
-      'Why Small Businesses Using AI Automation See 40% Lower Operating Costs',
-      'How AI Contact Centers Are Replacing Traditional Receptionists in 2026',
-      'The ROI of Business Automation: What the Numbers Actually Show',
-      'How to Launch a Business in 24 Hours Using AI Automation',
-      'What Is a White Label AI System and How Can Agencies Profit From It',
-      // ── Agency / income-opportunity topics ──────────────────
-      'How to Start a Website Agency in 2026 Using AI — No Design Skills Required',
-      'I Charged $1,500 for a Website That Took 20 Minutes to Build — Here Is How',
-      'The White Label AI Tool That Lets Anyone Run a Website Design Business',
-      'How to Turn a $149 Subscription Into a $5,000 Per Month Agency',
-      'Why Entrepreneurs Are Using AI Website Builders to Launch Service Businesses'
+      // ── Personal story / builder authority ──────────────────
+      'Why I Left Senior Network Engineering to Build AI Systems for Small Businesses',
+      'What 20 Years of Network Engineering Taught Me About Building AI Business Systems',
+      'I Built an AI Contact Center from Scratch — Here Is What I Learned',
+      'How a Network Engineer Thinks About AI Automation Differently Than a Marketer',
+      'The AI Stack I Built to Run Three Business Products Simultaneously',
+      // ── Product authority — FlowDesk Pro ────────────────────
+      'FlowDesk Pro: The Problem I Built It to Solve and Why It Works',
+      'Why Small Businesses Lose Leads Before 9AM — and How FlowDesk Pro Fixes It',
+      'How AI Lead Management Replaced Three Software Tools for Small Business Owners',
+      // ── Product authority — CapGen ──────────────────────────
+      'CapGen: Why I Built a Capability Statement Generator for Federal Contractors',
+      'How CapGen Pulls SAM.gov Data and Turns It Into a Submission-Ready PDF in Minutes',
+      'What Federal Contractors Get Wrong About Capability Statements — and How to Fix It',
+      // ── Broader AI systems thought leadership ───────────────
+      'Building AI Business Systems in 2026: What I Have Learned After 18 Months',
+      'The Difference Between an AI Tool Built by a Developer and One Built by a Systems Engineer'
     ];
 
     const response = await this.client.messages.create({
@@ -120,7 +122,7 @@ Return as a flat JSON array of 12 strings only. No preamble. No markdown.`
         role: 'user',
         content: `Given these SEO keywords: ${keywords.join(', ')}
 
-Select the single best article topic from this list that would rank well for those keywords and deliver the most value to a reader who is either a small business owner OR an entrepreneur looking to start a website or automation business:
+Select the single best article topic from this list that would rank well for those keywords, resonate with a professional LinkedIn audience, and reinforce the author's credibility as a Senior Network Engineer who builds AI business systems:
 
 ${topics.map((t, i) => `${i + 1}. ${t}`).join('\n')}
 
