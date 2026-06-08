@@ -38,7 +38,7 @@ class SchedulerAgent {
   getNextWeekday(dayOfWeek, hour, minute) {
     const now    = new Date();
     const result = new Date(now);
-    const diff   = (dayOfWeek - now.getDay() + 7) % 7 || 7;
+    const diff   = (dayOfWeek - now.getDay() + 7) % 7;
     result.setDate(now.getDate() + diff);
     result.setHours(hour, minute, 0, 0);
     return result.toISOString();
