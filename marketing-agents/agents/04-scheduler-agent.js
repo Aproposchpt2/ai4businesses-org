@@ -107,12 +107,30 @@ class SchedulerAgent {
   // ── CAMPAIGN 2 — Legacy aliases ─────────────────────
 
   async scheduleInstagram(caption) {
-    return this.scheduleC2Instagram(caption);
+    try {
+      const wednesday12pm = this.getNextWeekday(3, 12, 0);
+      const result = await this.scheduleZernio('instagram', caption, wednesday12pm);
+      console.log('[Scheduler C2] Instagram scheduled in Zernio:', result._id);
+      return { status: 'scheduled', platform: 'instagram', id: result._id, content: caption };
+    } catch (err) {
+      console.warn('[Scheduler C2] Zernio Instagram unavailable:', err.message);
+      return { status: 'email-delivery', platform: 'instagram', content: caption };
+    }
   }
+    return this.scheduleC2Instagram(caption);
 
   async scheduleTikTok(script) {
-    return this.scheduleC2TikTok(script);
+    try {
+      const thursday6pm = this.getNextWeekday(4, 18, 0);
+      const result = await this.scheduleZernio('tiktok', script, thursday6pm);
+      console.log('[Scheduler C2] TikTok scheduled in Zernio:', result._id);
+      return { status: 'scheduled', platform: 'tiktok', id: result._id, content: script };
+    } catch (err) {
+      console.warn('[Scheduler C2] Zernio TikTok unavailable:', err.message);
+      return { status: 'email-delivery', platform: 'tiktok', content: script };
+    }
   }
+    return this.scheduleC2TikTok(script);
 
   // ── CAMPAIGN 2 — Facebook (manual — log only) ────────
 
