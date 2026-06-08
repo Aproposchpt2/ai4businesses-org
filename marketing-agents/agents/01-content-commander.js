@@ -16,25 +16,36 @@ class ContentCommanderAgent {
     const keywords     = await this.generateKeywords();
     const articleTopic = await this.selectArticleTopic(keywords);
 
-    // Campaign 2 angles
-    const tiktokAngles    = [
+    // Campaign 2 angles — mix of product demos + agency/income hooks
+    const tiktokAngles = [
       'Watch AI build my website in 60 seconds',
       'Before and after site reveal',
       'Live color switching demo',
       'Live template switching demo',
-      'Your website approved before it goes live'
+      'Your website approved before it goes live',
+      'How I would charge $1,500 for a website that takes 20 minutes to build',
+      'Want a side hustle in 2026? Build AI websites for local businesses',
+      'This is how anyone can run a website agency with one subscription',
+      'The business model most people are sleeping on right now'
     ];
+
     const instagramAngles = [
       'Template showcase visual',
       'Color palette switching demo',
       'Client site spotlight reveal',
-      'Before and after comparison'
+      'Before and after comparison',
+      'The agency opportunity hidden inside this AI tool',
+      'From zero to website agency — what the subscription actually unlocks',
+      'Side-by-side: what a client pays vs what it costs you to deliver'
     ];
-    const facebookAngles  = [
+
+    const facebookAngles = [
       'Small business community tips',
       'Website checklist post',
       'Client success story format',
-      'Question that drives engagement'
+      'Question that drives engagement',
+      'How to start a website business with no design experience',
+      'Real talk: what white label AI tools actually mean for freelancers'
     ];
 
     const output = {
@@ -44,9 +55,9 @@ class ContentCommanderAgent {
         articleTopic
       },
       campaign2: {
-        tiktokAngle:   this.selectAngle(tiktokAngles),
-        igAngle:       this.selectAngle(instagramAngles),
-        fbAngle:       this.selectAngle(facebookAngles)
+        tiktokAngle: this.selectAngle(tiktokAngles),
+        igAngle:     this.selectAngle(instagramAngles),
+        fbAngle:     this.selectAngle(facebookAngles)
       }
     };
 
@@ -57,12 +68,20 @@ class ContentCommanderAgent {
   async generateKeywords() {
     const response = await this.client.messages.create({
       model: 'claude-sonnet-4-5',
-      max_tokens: 500,
+      max_tokens: 600,
       messages: [{
         role: 'user',
-        content: `Generate 10 high-intent SEO keywords for:
-AI business automation, AI contact center, CRM, small business efficiency.
-Return as JSON array only. No preamble. No markdown.`
+        content: `Generate 12 high-intent SEO keywords across two angles:
+
+Angle 1 — AI business automation (6 keywords):
+Target: small business owners looking to automate operations, replace manual work, reduce costs.
+Topics: AI contact center, CRM automation, small business efficiency, AI receptionist.
+
+Angle 2 — Agency/income opportunity (6 keywords):
+Target: entrepreneurs, freelancers, side-hustlers who want to build a website business or resell AI tools.
+Topics: how to start a website business, white label website builder, AI website agency, make money building websites, website reseller.
+
+Return as a flat JSON array of 12 strings only. No preamble. No markdown.`
       }]
     });
 
@@ -80,11 +99,18 @@ Return as JSON array only. No preamble. No markdown.`
 
   async selectArticleTopic(keywords) {
     const topics = [
+      // ── Original C1 topics — FlowDesk Pro / AI automation ──
       'Why Small Businesses Using AI Automation See 40% Lower Operating Costs',
       'How AI Contact Centers Are Replacing Traditional Receptionists in 2026',
       'The ROI of Business Automation: What the Numbers Actually Show',
       'How to Launch a Business in 24 Hours Using AI Automation',
-      'What Is a White Label AI System and How Can Agencies Profit From It'
+      'What Is a White Label AI System and How Can Agencies Profit From It',
+      // ── Agency / income-opportunity topics ──────────────────
+      'How to Start a Website Agency in 2026 Using AI — No Design Skills Required',
+      'I Charged $1,500 for a Website That Took 20 Minutes to Build — Here Is How',
+      'The White Label AI Tool That Lets Anyone Run a Website Design Business',
+      'How to Turn a $149 Subscription Into a $5,000 Per Month Agency',
+      'Why Entrepreneurs Are Using AI Website Builders to Launch Service Businesses'
     ];
 
     const response = await this.client.messages.create({
@@ -92,9 +118,10 @@ Return as JSON array only. No preamble. No markdown.`
       max_tokens: 300,
       messages: [{
         role: 'user',
-        content: `Given these keywords: ${keywords.join(', ')}
+        content: `Given these SEO keywords: ${keywords.join(', ')}
 
-Select the best article topic from this list:
+Select the single best article topic from this list that would rank well for those keywords and deliver the most value to a reader who is either a small business owner OR an entrepreneur looking to start a website or automation business:
+
 ${topics.map((t, i) => `${i + 1}. ${t}`).join('\n')}
 
 Return only the topic text. No explanation. No numbering.`
