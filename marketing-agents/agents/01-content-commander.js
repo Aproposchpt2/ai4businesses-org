@@ -20,27 +20,25 @@ class ContentCommanderAgent {
     const facebookAngles = [
       'Free website builder — see your site live before you approve it',
       'How to start a website side hustle using AI — no design skills needed',
-      'I would charge $1,500 for a website that takes 20 minutes to build',
       'The free website offer local business owners are missing',
       'Before and after: what an AI-built website looks like',
       'How anyone can run a website agency in 2026 with one subscription',
-      'Want to make extra income? Build websites for local businesses with AI'
+      'Want to make extra income? Build websites for local businesses with AI',
+      'What I would charge $1,500 for that takes 20 minutes to build'
     ];
 
     const tiktokAngles = [
       'Watch AI build a complete website in 60 seconds',
       'See your site live before it goes live — no competitor offers this',
       'Live color switching demo — pick your brand palette in real time',
-      'How I would charge $1,500 for a website that takes 20 minutes to build',
       'The side hustle most people are sleeping on in 2026'
     ];
 
     const instagramAngles = [
       'Template showcase — 12 design systems, zero cookie-cutter templates',
-      'Color palette switching live demo',
+      'Live color palette switching demo',
       'Before and after client site reveal',
-      'The agency opportunity inside a free website builder',
-      'Side-by-side: what a client pays vs what it costs you to deliver'
+      'The agency opportunity inside a free website builder'
     ];
 
     const output = {
@@ -65,13 +63,13 @@ class ContentCommanderAgent {
         role: 'user',
         content: `Generate 12 high-intent SEO keywords across two angles:
 
-Angle 1 — AI contact center and business automation for SMBs (6 keywords):
-Target: small and mid-size business owners who are paying too much for phone systems, CRM, and contact center tools — or going without.
-Topics: AI contact center for small business, affordable business phone system, replace Cisco CUCM, IVR for small business, AI lead management, FlowDesk Pro.
+Angle 1 — Affordable enterprise communication systems for small and mid-size businesses (6 keywords):
+Target: business owners who are overpaying for phone systems, being quoted enterprise vendor prices, or missing calls because they have no automated routing.
+Topics: AI contact center for small business, affordable IVR system, Microsoft Teams Direct Routing, business auto-attendant, replace Cisco phone system, FlowDesk Pro CRM.
 
-Angle 2 — CapGen and federal contracting tools (6 keywords):
-Target: federal contractors, small businesses pursuing government contracts, SAM.gov registered entities needing capability statements.
-Topics: capability statement generator, SAM.gov capability statement, federal contractor AI tools, government contract bid tools, CapGen, automated capability statement.
+Angle 2 — CapGen and federal contractor tools (6 keywords):
+Target: federal contractors and small businesses pursuing government contracts who need SAM.gov capability statements.
+Topics: capability statement generator, SAM.gov automation, federal contractor tools, government contract capability statement, AI for federal contractors, CapGen.
 
 Return as a flat JSON array of 12 strings only. No preamble. No markdown.`
       }]
@@ -91,25 +89,31 @@ Return as a flat JSON array of 12 strings only. No preamble. No markdown.`
 
   async selectArticleTopic(keywords) {
     const topics = [
-      // ── Founder story — portfolio-backed authority ───────────
-      'I Managed a Contact Center for 2,100 Users at a College. Here Is What I Learned About Small Business Phone Systems.',
-      'Why I Replaced Cisco CUCM Unity Connection and UCCX With an AI System That Costs a Fraction of the Price',
-      'What Enterprise IVR Architecture Actually Looks Like — and Why Small Businesses Never Get Access to It',
-      'I Migrated 2,000 Users Off Legacy Cisco Systems. Here Is What I Built Instead for Small Businesses.',
-      'From the VA to Small Business: Why Every Organization Deserves the Same Communication Stack',
-      'The Real Cost of Enterprise Phone Systems — And How AI Finally Changes the Math',
-      'What a COVID Emergency Deployment for 1,800 People Taught Me About What Businesses Actually Need',
+      // ── IVR / Auto-Attendant origin story ───────────────────
+      'The Operator Who Was Drowning in Calls — And the IVR System That Changed Everything',
+      'What Happens to a Business When One Person Is Manually Routing Every Call',
+      'Why I Built an Auto-Attendant for 100 Departments and What Small Businesses Can Learn From It',
+
+      // ── Teams migration — cost and engineering story ─────────
+      'How I Saved the College of Southern Nevada Thousands Per Month by Refusing a $20 Per Seat Proposal',
+      'I Vetted the Vendors. Then I Engineered the Whole Thing In-House. Here Is What I Learned.',
+      'The Microsoft Teams Migration Nobody Told You About — Existing Licenses, Your Own SBC, No Porting Fees',
+      'Why Your Teams Migration Might Be Stalled at E911 — Karis Law Ray Baums Act and How to Get Through It',
+      'Three Cost Decisions That Saved a College a Fortune on a Phone System Migration',
+
       // ── FlowDesk Pro product authority ──────────────────────
-      'FlowDesk Pro: The Problem I Saw in Every Organization I Worked In and Why I Built the Fix',
-      'Why Small Businesses Lose Leads Before 9AM — and the System I Built to Stop It',
-      'How AI Lead Management Replaces Three Software Tools Small Businesses Are Overpaying For',
+      'FlowDesk Pro: The Problem I Watched Repeat Itself in Every Organization I Worked In',
+      'Why Small Businesses Lose Leads Before 9AM — and the AI System I Built to Stop It',
+      'How AI Auto-Attendant Replaces the Overloaded Receptionist Every Small Business Depends On',
+
       // ── CapGen product authority ─────────────────────────────
       'CapGen: Why I Built a Capability Statement Generator for Federal Contractors',
       'What Federal Contractors Get Wrong About Capability Statements — and How to Fix It in Minutes',
       'How CapGen Pulls Verified SAM.gov Data and Builds a Submission-Ready PDF Automatically',
-      // ── Broader systems thought leadership ──────────────────
-      'Building AI Business Systems in 2026: What I Have Learned After 18 Months',
-      'The Difference Between an AI Tool Built by a Developer and One Built by a Systems Engineer'
+
+      // ── Broader authority ────────────────────────────────────
+      'The Enterprise Communication Stack That Small Businesses Deserve But Cannot Afford — Until Now',
+      'What 20 Years of Building Enterprise Systems Taught Me About What Small Businesses Actually Need'
     ];
 
     const response = await this.client.messages.create({
@@ -119,7 +123,7 @@ Return as a flat JSON array of 12 strings only. No preamble. No markdown.`
         role: 'user',
         content: `Given these SEO keywords: ${keywords.join(', ')}
 
-Select the single best article topic from this list. Choose the topic that would rank well for those keywords AND resonate most with a LinkedIn audience of professionals, business owners, and engineers who would recognize the credibility of someone who has managed large enterprise UC systems:
+Select the single best article topic from this list. Choose the topic that would rank well for those keywords AND would resonate most with a LinkedIn audience of professionals, engineers, and business owners who respect real-world technical experience:
 
 ${topics.map((t, i) => `${i + 1}. ${t}`).join('\n')}
 

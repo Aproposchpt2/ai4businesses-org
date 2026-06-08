@@ -2,24 +2,43 @@ require('dotenv').config();
 const Anthropic = require('@anthropic-ai/sdk');
 
 const AUTHOR_VOICE = `
-AUTHOR: Jeffery E. Mitchell — Senior Unified Communications Engineer, Founder of Apropos Group LLC and AI4 Businesses.
+AUTHOR: Jeffery E. Mitchell — Senior Unified Communications Engineer. Founder of Apropos Group LLC and AI4 Businesses.
 
-DOCUMENTED PROJECT EXPERIENCE (reference these specifics to write with real authority):
-- Designed and deployed Cisco UCCX IVR architecture at the College of Southern Nevada: 2,100+ users, 100+ departments, automated call flows, department queues, IVR scripts integrated with Cisco CUCM. Ongoing operational management of the contact center system.
-- Led full lifecycle migration of 2,000+ users to Microsoft Teams Enterprise Voice across 100+ departments using Cisco CUBE SBC Direct Routing — replaced legacy Cisco CUCM, Unity Connection, and UCCX, eliminating long-term licensing, hardware, and support costs.
-- Engineered emergency WebEx Teams deployment for 1,800 faculty and staff during COVID-19 — maintained operational continuity, eliminated cell phone forwarding across the college.
-- Deployed Cisco CME voice infrastructure for a Veterans Affairs medical facility — SIP trunks, voice gateways, dial plans, clinical and administrative IP endpoints.
-- Designed UCCX auto-attendant and call flow architecture for DWED Community Outreach Center: 70 staff, 8 departments including workforce development, ESL, medical programs.
-- Managed FreePBX VoIP environment for Eye Surgery Centers — SIP configuration, endpoint provisioning, dial plan management.
+DOCUMENTED PROJECT EXPERIENCE — reference these specific details to write with real authority:
 
-LINKEDIN AUDIENCE: Jeff's professional network includes ex co-workers, senior network engineers, IT professionals, and peers from higher education, healthcare, government, and enterprise environments. They know his technical background firsthand. Posts should feel like a practitioner speaking to peers — not a founder selling a product.
+STORY 1 — THE DROWNING OPERATOR (IVR Origin Story):
+Jeff identified that departments at the College of Southern Nevada were fielding extremely high call volumes with a single operator trying to manually answer and route every call — fielding each one by hand, routing to the right department, over and over. He designed and deployed a Cisco UCCX IVR and Auto-Attendant architecture to solve it: automated call flows, department queues, and IVR scripts integrated with Cisco CUCM across 2,100+ users and 100+ departments. The single operator's burden was eliminated. Calls reached the right destination automatically.
+WHY IT MATTERS FOR LINKEDIN: This exact situation — one person manually handling every incoming call — is what most small businesses deal with daily. They either miss calls or exhaust staff. FlowDesk Pro is the affordable AI version of what Jeff built at the college.
 
-THE "WHY" THAT SHOULD RUN THROUGH ALL LINKEDIN CONTENT:
-Jeff built FlowDesk Pro because he spent years managing the exact enterprise contact center systems — Cisco UCCX, CUCM, Unity Connection — that small businesses can't afford. The hardware costs, the Cisco licensing, the support contracts, the need for specialized engineers, the endless upgrade cycles just to keep current. He rebuilt the same functionality in AI at a price any small business can afford. No hardware. No licensing treadmill. FlowDesk Pro is the enterprise contact center stack, without the enterprise price tag. He built CapGen after seeing the documentation and compliance burden that blocks small businesses and federal contractors from competing for government work.
+STORY 2 — THE $20/SEAT REFUSAL (Teams Migration Origin Story):
+The college was evaluating outside agencies that wanted to charge $20 per seat per month to manage the migration to Microsoft Teams Enterprise Voice. Jeff was tasked to vet these vendors. He sat across from them, reviewed their proposals, and identified a better path: do it in-house and engineer the entire solution himself.
+
+His cost-saving engineering decisions:
+- Kept the college's existing Cox Communications SIP trunks — no number porting, no porting fees, no new provider onboarding cost
+- Configured the college's own Cisco CUBE router as the SBC for Microsoft Teams Direct Routing — no outside vendor, no new hardware
+- Used Microsoft Teams calling licenses the college had already paid for but never activated — zero additional licensing cost
+- Eliminated the $20/seat/month recurring management fee entirely
+
+He started with a small staff POC that validated the approach. The migration bottleneck was regulatory, not technical: achieving compliance with Kari's Law and the Ray Baum's Act required contracting Intrado for an E911 solution. While waiting on the Intrado E911 configuration, Jeff continued building the Microsoft Teams environment in parallel so no time was wasted. The migration of 2,000+ users across 100+ departments was completed successfully.
+WHY IT MATTERS FOR LINKEDIN: Small businesses and organizations are being quoted similar enterprise vendor fees for phone systems, contact center tools, and communication infrastructure they could have for a fraction of the cost. Jeff's experience vetting vendors and engineering the in-house solution is what led him to build FlowDesk Pro — the enterprise communication stack without the enterprise pricing.
+
+STORY 3 — COVID DEPLOYMENT:
+Engineered emergency migration of 1,800 faculty and staff to Cisco WebEx Teams during COVID-19 — under crisis conditions and time pressure. Eliminated the need for employees to forward calls to personal cell phones and maintained operational continuity across the entire college.
+
+STORY 4 — VA MEDICAL FACILITY:
+Deployed Cisco CME voice infrastructure for a Veterans Affairs medical facility — SIP trunks via Cox, voice gateways, dial plans, IP endpoints supporting clinical and administrative operations.
+
+STORY 5 — DWED COMMUNITY OUTREACH CENTER:
+Designed UCCX auto-attendant and call flow architecture for 70 staff across 8 departments including workforce development, ESL training, medical programs.
+
+LINKEDIN AUDIENCE: Jeff's professional contacts are ex co-workers, senior network engineers, IT professionals, and peers from higher education, healthcare, government, and enterprise environments. Many of them have been in the same room when vendors quote $20/seat for something the organization already owns. Posts should feel like a credible peer sharing a real insight — not a founder pitching a product.
+
+THE "WHY" CORE STATEMENT:
+Jeff built FlowDesk Pro because he spent years building the exact systems small businesses can't afford — UCCX, CUCM, enterprise auto-attendants, direct routing. He watched organizations get quoted $20/seat by outside vendors for migrations they could engineer in-house. He watched single operators drown in call volume because departments couldn't afford proper IVR systems. He rebuilt all of it in AI at a price any business can afford. No hardware. No licensing treadmill. No specialized engineers required.
 
 PRODUCTS:
 - FlowDesk Pro: AI contact center + CRM + lead management. Fast Track Bundle $349/month. https://aiflowdeskpro.com — "Never miss a lead from day one."
-- CapGen: AI capability statement generator for federal contractors. SAM.gov verified data, branded PDF, submission ready. https://capgen.aproposgroupllc.com
+- CapGen: AI capability statement generator for federal contractors. SAM.gov verified, branded PDF. https://capgen.aproposgroupllc.com
 `.trim();
 
 class SocialAgent {
@@ -32,12 +51,15 @@ class SocialAgent {
   async createLinkedInPost(articleUrl, topic) {
     console.log('[Social C1] Creating LinkedIn post...');
 
-    const isPersonalTopic = ['i managed', 'i built', 'i left', 'i learned', 'why i', 'how i', 'i migrated', 'i saw', 'what i']
-      .some(m => topic.toLowerCase().includes(m));
+    const isPersonalTopic = [
+      'i managed', 'i built', 'i left', 'i learned', 'why i', 'how i',
+      'i migrated', 'i saw', 'i saved', 'i refused', 'i vetted', 'i configured',
+      'i was', 'i identified', 'what i', 'operator', '$20', 'kari'
+    ].some(m => topic.toLowerCase().includes(m));
 
     const toneGuide = isPersonalTopic
-      ? `This is Jeff sharing a direct personal insight from his career. Write in first-person. Reference a specific project from his background where it strengthens the point. His LinkedIn contacts know he did this work — the specificity is what makes it credible.`
-      : `Write in first-person from Jeff's practitioner perspective. He built FlowDesk Pro and CapGen because he saw the problem firsthand in the enterprise environments he managed. That experience is the authority.`;
+      ? `This is Jeff sharing a direct insight from a real project. Write in first-person. Reference a specific moment, cost figure, system name, or regulatory detail from his background. His LinkedIn contacts will recognize it as real because many of them have been in the same situations.`
+      : `Write in first-person from Jeff's perspective as a practitioner who has built these systems. He is sharing insight earned from real deployments — not theory.`;
 
     const response = await this.client.messages.create({
       model: 'claude-sonnet-4-5',
@@ -54,13 +76,13 @@ Article URL: ${articleUrl}
 Tone guidance: ${toneGuide}
 
 Requirements:
-- First-person voice — Jeff is speaking directly to his professional network of engineers and business professionals
-- Open with a specific, practitioner-level insight — not a generic hook. Something his ex co-workers and engineering peers would immediately recognize as real
+- First-person voice throughout
+- Open with a specific practitioner insight — something that only someone who has been in these technical environments would say. Use real system names, cost figures, regulatory terms, or project specifics where they strengthen the point.
 - 150-200 words
-- Reference FlowDesk Pro (https://aiflowdeskpro.com) and/or CapGen (https://capgen.aproposgroupllc.com) as the solution he built, not as products being marketed
+- Reference FlowDesk Pro (https://aiflowdeskpro.com) and/or CapGen (https://capgen.aproposgroupllc.com) as the solution he built — not as products being pitched
 - End with the article link
-- 3-5 hashtags from: #UnifiedCommunications #AI #NetworkEngineering #SmallBusiness #BusinessAutomation #FlowDeskPro #CapGen #CiscoUCCX #EnterpriseTech
-- Tone: senior engineer who built things, not a marketer who sells things
+- 3-5 hashtags from: #UnifiedCommunications #AI #NetworkEngineering #SmallBusiness #BusinessAutomation #FlowDeskPro #CapGen #MicrosoftTeams #DirectRouting #UCCX
+- Tone: Senior engineer sharing real experience with peers. Not a marketer. Not a founder pitching. The product mention should feel like a natural consequence of the story — not the point of the post.
 
 Return post only. No preamble.`
       }]
@@ -84,10 +106,10 @@ Monday article topic: ${topic}
 Requirements:
 - First-person, practitioner voice
 - 80-120 words
-- Build curiosity for Monday's article — hint at the insight without giving it away
-- Draw from a specific real experience from his portfolio where it adds weight (UCCX at CSN, Teams migration, COVID deployment, VA facility, etc.)
+- Build curiosity for Monday's article — hint at the specific insight without giving it away
+- Anchor to a real moment from his work: a cost figure ($20/seat), a regulatory term (Kari's Law), a system he managed (UCCX, CUBE, CUCM), a situation he was in (vetting vendors, watching an operator drown in calls, doing a COVID deployment)
 - Link to https://ai4businesses.org
-- 3 hashtags max from: #UnifiedCommunications #AI #NetworkEngineering #SmallBusiness #BusinessAutomation
+- 3 hashtags max
 
 Return post only. No preamble.`
       }]
@@ -108,14 +130,14 @@ Return post only. No preamble.`
 
 Angle: ${angle}
 
-Context: Jeffrey is sharing this with his personal Facebook network — friends, family, local connections. This is NOT a brand page post. It should feel personal, genuine, and helpful — like a friend telling you about something useful they built.
+Context: Jeffrey is sharing this with his personal network — friends, family, and local connections. This is a personal page post, not a brand post. It should feel warm and genuine, like a friend sharing something useful.
 
 Requirements:
-- Personal, warm, conversational tone
+- Personal, conversational tone
 - 150-200 words
 - Highlight the free website builder
 - Key differentiator: "See your site live before you approve it" — no competitor offers this
-- Include the income/agency angle naturally: someone ambitious can see a business opportunity here
+- Include the income opportunity angle naturally: ambitious readers can see a business opportunity here
 - CTA: platinum.ai4websitedesign.com
 - 3-5 hashtags
 
@@ -136,13 +158,13 @@ Return post only. No preamble.`
 
 Ángulo: ${angle}
 
-Contexto: Jeffrey comparte esto en su página personal de Facebook. Debe sentirse personal y genuino — como un amigo compartiendo algo útil que construyó.
+Contexto: Post personal, no de marca. Debe sentirse como un amigo compartiendo algo útil.
 
 Requisitos:
 - Tono personal, cálido, conversacional
 - 150-200 palabras
 - Destaca el constructor de sitios web gratuito
-- Diferenciador clave: "Ve tu sitio EN VIVO antes de aprobarlo"
+- Diferenciador: "Ve tu sitio EN VIVO antes de aprobarlo"
 - Incluye el ángulo de oportunidad de negocio de forma natural
 - Link: espanola.ai4websitedesign.com
 - 3-5 hashtags en español
@@ -165,7 +187,7 @@ Devuelve solo el post. Sin preámbulo.`
         content: `Write a TikTok video script for AI4 Website Design Studio.
 Angle: ${angle}
 Requirements:
-- 45-60 seconds when spoken aloud
+- 45-60 seconds spoken aloud
 - Hook in first 3 seconds
 - Highlight: "See your site LIVE before you approve it"
 - No competitor offers this
@@ -189,10 +211,8 @@ Return script only. No preamble.`
         content: `Write an Instagram caption for AI4 Website Design Studio.
 Angle: ${angle}
 Requirements:
-- 100-150 words
-- Strong visual hook opening line
-- Highlight: "See your site LIVE before you approve it"
-- No competitor offers this
+- 100-150 words, strong visual hook opening
+- "See your site LIVE before you approve it" — no competitor offers this
 - CTA: Link in bio → platinum.ai4websitedesign.com
 - 10-15 hashtags
 Return caption only. No preamble.`
@@ -212,8 +232,7 @@ Return caption only. No preamble.`
 Ángulo: ${angle}
 Requisitos:
 - 100-150 palabras
-- Destaca: "Ve tu sitio EN VIVO antes de aprobarlo"
-- Ningún competidor ofrece esto
+- "Ve tu sitio EN VIVO antes de aprobarlo" — ningún competidor ofrece esto
 - Link: espanola.ai4websitedesign.com
 - 10-15 hashtags en español
 Devuelve solo el caption. Sin preámbulo.`
