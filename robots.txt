@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /.netlify/
+Disallow: /api/
+
+Sitemap: https://ai4businesses.org/sitemap.xml
