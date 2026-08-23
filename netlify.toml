@@ -1,4 +1,5 @@
 [build]
+  command   = "node scripts/apply-seo-foundation.cjs"
   publish   = "."
   functions = "netlify/functions"
 
