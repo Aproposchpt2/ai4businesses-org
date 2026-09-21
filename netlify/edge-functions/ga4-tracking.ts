@@ -27,8 +27,10 @@ const analyticsMarkup = `
 
       if (href.indexOf('tel:') === 0) {
         send('phone_call_click', { link_text: label });
+        send('contact_intent', { contact_method: 'phone', link_text: label });
       } else if (href.indexOf('mailto:') === 0) {
         send('email_click', { link_text: label });
+        send('contact_intent', { contact_method: 'email', link_text: label });
       } else if (
         /demo/i.test(label) ||
         /aiflowdeskpro\\.com/i.test(href) ||
@@ -36,6 +38,11 @@ const analyticsMarkup = `
         /lead-management\\.aiflowdeskpro\\.com/i.test(href)
       ) {
         send('product_demo_click', {
+          link_text: label,
+          link_url: href
+        });
+        send('contact_intent', {
+          intent: 'product_demo',
           link_text: label,
           link_url: href
         });
@@ -47,7 +54,8 @@ const analyticsMarkup = `
       if (!form || !form.id) return;
 
       if (['contact-form', 'consultation-form', 'startup-consultation-form'].indexOf(form.id) !== -1) {
-        send('generate_lead', {
+        send('contact_intent', {
+          intent: 'form_submit',
           form_id: form.id,
           page_location: window.location.href
         });
